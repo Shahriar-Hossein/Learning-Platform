@@ -22,32 +22,57 @@
     <!-- Custom Style CSS -->
     <link rel="stylesheet" type="text/css" href="./css/style.css" />
     <title>Elearning</title>
+
+      <style>
+          .navbar-nav-center {
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
+          }
+      </style>
   </head>
   <body>
-     <!-- Start Nagigation -->
-    <nav class="navbar navbar-expand-sm navbar-dark pl-5 fixed-top">
-      <a href="index.php" class="navbar-brand">aSchool</a>
-      <span class="navbar-text">Learn and Implement</span>
-      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="myMenu">
-        <ul class="navbar-nav pl-5 custom-nav">
-          <li class="nav-item custom-nav-item"><a href="index.php" class="nav-link">Home</a></li>
-          <li class="nav-item custom-nav-item"><a href="courses.php" class="nav-link">Courses</a></li>
-          
-          <?php 
-              session_start();   
-              if (isset($_SESSION['is_login'])){
-                echo '<li class="nav-item custom-nav-item"><a href="student/studentProfile.php" class="nav-link">My Profile</a></li> 
-                      <li class="nav-item custom-nav-item"><a href="logout.php" class="nav-link">Logout</a></li>';
-              } else{
-                echo '<li class="nav-item custom-nav-item"><a href="#login" class="nav-link" data-toggle="modal" data-target="#stuLoginModalCenter">Login</a></li>
-                      <li class="nav-item custom-nav-item"><a href="#signup" class="nav-link" data-toggle="modal" data-target="#stuRegModalCenter">Signup</a></li>';
-              }
-          ?> 
-          <li class="nav-item custom-nav-item"><a href="#Feedback" class="nav-link">Feedback</a></li>
-          <li class="nav-item custom-nav-item"><a href="#Contact" class="nav-link">Contact</a></li>
-        </ul>
+  <!-- Start Navigation -->
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+          <!-- Company name -->
+          <a href="index.php" class="navbar-brand d-flex flex-column">
+              <span style="font-size: 1.5rem;">Maria's School</span>
+              <span style="font-size: 0.7rem;">Learn and Implement</span>
+          </a>
+
+          <!-- Toggle button for mobile view -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Navbar links -->
+          <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+              <ul class="navbar-nav navbar-nav-center">
+                  <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
+                  <li class="nav-item"><a href="courses.php" class="nav-link">Courses</a></li>
+                  <li class="nav-item"><a href="#Feedback" class="nav-link">Feedback</a></li>
+                  <li class="nav-item"><a href="#Contact" class="nav-link">Contact</a></li>
+              </ul>
+          </div>
+
+          <!-- Authentication links -->
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+              <ul class="navbar-nav">
+                  <?php
+                  session_start();
+                  if (isset($_SESSION['is_login'])) {
+                      echo '<li class="nav-item"><a href="student/studentProfile.php" class="nav-link">My Profile</a></li>';
+                      echo '<li class="nav-item"><a href="logout.php" class="nav-link">Logout</a></li>';
+                  } else {
+                      echo '<li class="nav-item"><a href="#login" class="nav-link" data-toggle="modal" data-target="#stuLoginModalCenter">Login</a></li>';
+                      echo '<li class="nav-item"><a href="#signup" class="nav-link" data-toggle="modal" data-target="#stuRegModalCenter">Signup</a></li>';
+                  }
+                  ?>
+              </ul>
+          </div>
       </div>
-    </nav> <!-- End Navigation -->
+  </nav>
+  <!-- End Navigation -->
+
+
