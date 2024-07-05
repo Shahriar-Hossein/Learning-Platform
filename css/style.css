@@ -41,8 +41,8 @@ video {
 .vid-content {
   color: #fff;
   position: absolute;
-  top: 35%;
-  left: 35%;
+  top: 20%;
+  left: 50%;
   z-index: 2;
   text-align: center;
 }
@@ -78,10 +78,6 @@ a.social-hover:hover {
     display: none;
   } /* hide it on small screens */
 
-  .vid-content {
-    top: 12%;
-    left: 60%;
-  }
   .custom-nav .custom-nav-item a {
     padding: 10px 20px;
     background-color: #225470;
@@ -93,3 +89,4 @@ a.social-hover:hover {
     border-radius: none;
   }
 }
+

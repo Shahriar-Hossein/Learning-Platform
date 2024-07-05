@@ -4,24 +4,18 @@
   include('./mainInclude/header.php'); 
 ?>  
     <!-- Start Video Background-->
-    <div class="container-fluid remove-vid-marg">
-      <div class="vid-parent">
-        <video playsinline autoplay muted loop>
-          <source src="video\7534239-hd_1920_1080_25fps.mp4" />
-        </video>
-        <div class="vid-overlay"></div>
-      </div>
-      <div class="vid-content" >
-        <h1 class="my-content">Welcome to aSchool</h1>
-        <small class="my-content">Learn and Implement</small><br />
+    <div class="position-relative main-banner">
+      <img src="image\banner.jpg" class="banner-image" alt="Website Banner" style="opacity: 40%">
+      <div class="position-absolute" style="left: 40%; top: 30%; text-align: center" >
+        <h1 class="">Maria's Online School</h1>
+        <small class="">Learn and Implement</small><br />
         <?php    
               if(!isset($_SESSION['is_login'])){
                 echo '<a class="btn btn-primary mt-3" href="#" data-toggle="modal" data-target="#stuRegModalCenter">Get Started</a>';
               } else {
                 echo '<a class="btn btn-primary mt-3" href="student/studentProfile.php">My Profile</a>';
               }
-          ?> 
-       
+          ?>
       </div>
     </div> <!-- End Video Background -->
 
@@ -41,57 +35,36 @@
           </div>
         </div>
     </div> <!-- End Text Banner -->
-    
-    <div class="container mt-5"> <!-- Start Most Popular Course -->
-      <h1 class="text-center">Popular Course</h1>
-      <div class="card-deck mt-4"> <!-- Start Most Popular Course 1st Card Deck -->
-        <?php
-        $sql = "SELECT * FROM course LIMIT 3";
-        $result = $conn->query($sql);
-        if($result->num_rows > 0){ 
-          while($row = $result->fetch_assoc()){
-            $course_id = $row['course_id'];
-            echo '
-            <a href="coursedetails.php?course_id='.$course_id.'" class="btn" style="text-align: left; padding:0px; margin:0px;">
-              <div class="card">
-                <img src="'.str_replace('..', '.', $row['course_img']).'" class="card-img-top" alt="Guitar" />
-                <div class="card-body">
-                  <h5 class="card-title">'.$row['course_name'].'</h5>
-                
-                </div>
-                <div class="card-footer">
-                  <p class="card-text d-inline">Price: <small><del>&#2547; '.$row['course_original_price'].'</del></small> <span class="font-weight-bolder">&#2547; '.$row['course_price'].'<span></p> <a class="btn btn-primary text-white font-weight-bolder float-right" href="coursedetails.php?course_id='.$course_id.'">Enroll</a>
-                </div>
-              </div>
-            </a>  ';
-          }
-        }
-        ?>   
-      </div>  <!-- End Most Popular Course 1st Card Deck -->   
-      <div class="card-deck mt-4"> <!-- Start Most Popular Course 2nd Card Deck -->
-        <?php
-          $sql = "SELECT * FROM course LIMIT 3,3";
-          $result = $conn->query($sql);
-          if($result->num_rows > 0){ 
-            while($row = $result->fetch_assoc()){
-              $course_id = $row['course_id'];
-              echo '
-                <a href="coursedetails.php?course_id='.$course_id.'"  class="btn" style="text-align: left; padding:0px;">
-                  <div class="card">
-                    <img src="'.str_replace('..', '.', $row['course_img']).'" class="card-img-top" alt="Guitar" />
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Popular Courses</h1>
+        <div class="row">
+            <?php
+            $sql = "SELECT * FROM course LIMIT 6";
+            $result = $conn->query($sql);
+            if($result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $course_id = $row['course_id'];
+                    echo '
+              <div class="col-md-4 mb-4">
+                <a href="coursedetails.php?course_id='.$course_id.'" class="text-decoration-none text-dark">
+                  <div class="card h-100">
+                    <img src="'.str_replace('..', '.', $row['course_img']).'" class="card-img-top" alt="Course Image" />
                     <div class="card-body">
                       <h5 class="card-title">'.$row['course_name'].'</h5>
-                    
                     </div>
                     <div class="card-footer">
-                      <p class="card-text d-inline">Price: <small><del>&#2547;'.$row['course_original_price'].'</del></small> <span class="font-weight-bolder">&#2547; '.$row['course_price'].'<span></p> <a class="btn btn-primary text-white font-weight-bolder float-right" href="#">Enroll</a>
+                      <p class="card-text d-inline">Price: <small><del>&#2547; '.$row['course_original_price'].'</del></small> <span class="font-weight-bolder">&#2547; '.$row['course_price'].'</span></p>
+                      <span class="btn btn-primary text-white">Enroll</span>
                     </div>
                   </div>
-                </a>  ';
+                </a>
+              </div>';
+                }
             }
-          }
-        ?>
-      </div>   <!-- End Most Popular Course 2nd Card Deck --> 
+            ?>
+        </div>
+    </div>
       <div class="text-center m-2">
         <a class="btn btn-danger btn-sm" href="courses.php">View All Course</a> 
       </div>
@@ -180,3 +153,40 @@
     include('./mainInclude/footer.php'); 
     
   ?>  
+
+
+<style>
+    .main-banner {
+        height: 60vh;
+        background-color: #005281;
+        color: whitesmoke;
+    }
+    .main-banner > img {
+        height: 100%;
+        width: 100%;
+    }
+    .card img {
+        object-fit: cover;
+        height: 200px;
+    }
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .card-footer p {
+        margin: 0;
+    }
+    .card-footer .btn {
+        padding: 0.375rem 0.75rem;
+    }
+    .card a {
+        text-decoration: none;
+    }
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.02);
+    }
+</style>
