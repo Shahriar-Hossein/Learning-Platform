@@ -8,7 +8,7 @@
       <img src="image\banner.jpg" class="banner-image" alt="Website Banner" style="opacity: 40%">
       <div class="position-absolute" style="left: 40%; top: 30%; text-align: center" >
         <h1 class="">Maria's Online School</h1>
-        <small class="">Learn and Implement</small><br />
+        <small class="">Learn and Grow</small><br />
         <?php    
               if(!isset($_SESSION['is_login'])){
                 echo '<a class="btn btn-primary mt-3" href="#" data-toggle="modal" data-target="#stuRegModalCenter">Get Started</a>';

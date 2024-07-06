@@ -38,7 +38,7 @@
           <!-- Company name -->
           <a href="index.php" class="navbar-brand d-flex flex-column">
               <span style="font-size: 1.5rem;">Maria's School</span>
-              <span style="font-size: 0.7rem;">Learn and Implement</span>
+              <span style="font-size: 0.7rem;">Learn and Grow</span>
           </a>
 
           <!-- Toggle button for mobile view -->
