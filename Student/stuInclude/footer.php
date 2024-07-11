@@ -40,8 +40,10 @@
             <div class="modal-body">
                 <form role="form" id="stuLoginForm">
                     <div class="form-group">
-                        <i class="fas fa-envelope"></i><label for="stuLogEmail" class="pl-2 font-weight-bold">Email</label><small id="statusLogMsg1"></small><input type="email"
-                                                                                                                                                                    class="form-control" placeholder="Email" name="stuLogEmail" id="stuLogEmail">
+                        <i class="fas fa-envelope"></i>
+                        <label for="stuLogEmail" class="pl-2 font-weight-bold">Email</label>
+                        <small id="statusLogMsg1"></small>
+                        <input type="email" class="form-control" placeholder="Email" name="stuLogEmail" id="stuLogEmail">
                     </div>
                     <div class="form-group">
                         <i class="fas fa-key"></i><label for="stuLogPass" class="pl-2 font-weight-bold">Password</label><input type="password" class="form-control" placeholder="Password" name="stuLogPass" id="stuLogPass">

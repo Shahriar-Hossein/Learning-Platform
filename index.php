@@ -3,7 +3,6 @@
   // Header Include from mainInclude 
   include('./mainInclude/header.php'); 
 ?>  
-    <!-- Start Video Background-->
     <div class="position-relative main-banner">
       <img src="image\banner.jpg" class="banner-image" alt="Website Banner" style="opacity: 40%">
       <div class="position-absolute" style="left: 40%; top: 30%; text-align: center" >
@@ -156,37 +155,5 @@
 
 
 <style>
-    .main-banner {
-        height: 60vh;
-        background-color: #005281;
-        color: whitesmoke;
-    }
-    .main-banner > img {
-        height: 100%;
-        width: 100%;
-    }
-    .card img {
-        object-fit: cover;
-        height: 200px;
-    }
-    .card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .card-footer p {
-        margin: 0;
-    }
-    .card-footer .btn {
-        padding: 0.375rem 0.75rem;
-    }
-    .card a {
-        text-decoration: none;
-    }
-    .card {
-        transition: transform 0.2s;
-    }
-    .card:hover {
-        transform: scale(1.02);
-    }
+
 </style>
