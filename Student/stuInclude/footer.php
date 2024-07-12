@@ -1,5 +1,3 @@
-<!--    File Not Used      -->
-    
 <!-- Start Footer -->
 <footer class="container-fluid bg-dark text-center p-2">
     <small class="text-white">Copyright &copy; 2024|| Designed By E-Learning ||
@@ -25,7 +23,6 @@
         </div>
     </div>
 </div> <!-- End Student Registration Modal -->
-
 
 <!-- Start Student Login Modal -->
 <div class="modal fade" id="stuLoginModalCenter" tabindex="-1" role="dialog" aria-labelledby="stuLoginModalCenterTitle" aria-hidden="true">
