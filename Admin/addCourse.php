@@ -2,10 +2,13 @@
 if(!isset($_SESSION)){ 
   session_start(); 
 }
-define('TITLE', 'Add Course');
-define('PAGE', 'addcourse');
-include('./adminInclude/header.php'); 
 include('../dbConnection.php');
+
+const TITLE = 'Add Course';
+const PAGE = 'addcourse';
+
+include('./adminInclude/sidebar.php');
+
 
  if(isset($_SESSION['is_admin_login'])){
   $adminEmail = $_SESSION['adminLogEmail'];
@@ -16,7 +19,7 @@ include('../dbConnection.php');
   // Checking for Empty Fields
   if(($_REQUEST['course_name'] == "") || ($_REQUEST['course_desc'] == "") || ($_REQUEST['course_author'] == "") || ($_REQUEST['course_duration'] == "") || ($_REQUEST['course_price'] == "") || ($_REQUEST['course_original_price'] == "")){
    // msg displayed if required field missing
-   $msg = '<div class="alert alert-warning col-sm-6 ml-5 mt-2" role="alert"> Fill All Fileds </div>';
+   $msg = '<div class="alert alert-warning col-sm-6 ml-5 mt-2" role="alert"> Fill All Fields </div>';
   } else {
    // Assigning User Values to Variable
    $course_name = $_REQUEST['course_name'];

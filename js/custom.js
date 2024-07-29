@@ -34,4 +34,12 @@ $(document).ready(function() {
         .attr("movieurl")
     });
   });
+
+  $('#stuRegModalCenter').on('hide.bs.modal', function (e) {
+    clearAllStuReg();
+  });
+
+  $('#stuLoginModalCenter').on('hide.bs.modal', function (e) {
+    clearStuLoginWithStatus();
+  });
 });

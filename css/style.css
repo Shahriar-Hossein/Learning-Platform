@@ -1,8 +1,15 @@
+@import "sidebar.css";
+
 .navbar-brand {
   font-family: "Ubuntu", sans-serif;
   font-size: 2em;
   font-weight: bold;
   color: #fff;
+}
+.navbar-nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .custom-nav .custom-nav-item a {
@@ -16,8 +23,8 @@
 }
 
 .remove-vid-marg {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 .vid-parent {
@@ -160,6 +167,7 @@ a.social-hover:hover {
 .main-banner > img {
   height: 100%;
   width: 100%;
+  opacity: 40%;
 }
 .card img {
   object-fit: cover;
@@ -186,3 +194,16 @@ a.social-hover:hover {
   transform: scale(1.02);
 }
 /* banner styles */
+
+/* home page banner */
+.home-banner-image {
+
+}
+
+.home-banner-position {
+  right: 40%;
+  left: 40%;
+  top: 30%;
+  text-align: center;
+}
+/* home page banner */

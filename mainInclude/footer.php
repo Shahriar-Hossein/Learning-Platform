@@ -1,30 +1,29 @@
- <!-- Start Footer -->
- <footer class="container-fluid bg-dark text-center p-2">
-    <small class="text-white">Copyright &copy; 2024 || Designed By E-Learning || <?php   
-          
-    ?>
-  </small> 
-  
- </footer> <!-- End Footer -->
+<!-- Start Footer -->
+<footer class="bg-gray-800 text-white p-4 flex justify-center items-center">
+  <small class="text-white">Copyright &copy; 2024 || Designed By E-Learning || </small>
+</footer> <!-- End Footer -->
 
-    <!-- Start Student Registration Modal -->
-    <div class="modal fade" id="stuRegModalCenter" tabindex="-1" role="dialog" aria-labelledby="stuRegModalCenterTitle" aria-hidden="true" >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="stuRegModalCenterTitle">Student Registration</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearAllStuReg()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!--Start Form Registration-->
-            <?php include('studentRegistration.php'); ?>
-            <!-- End Form Registration -->
-          </div>
-        </div>
+</div>
+
+<!-- Start Student Registration Modal -->
+<div class="modal fade" id="stuRegModalCenter" tabindex="-1" role="dialog" aria-labelledby="stuRegModalCenterTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stuRegModalCenterTitle">Student Registration</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearAllStuReg()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </div> <!-- End Student Registration Modal -->
+      <div class="modal-body">
+        <!--Start Form Registration-->
+        <?php include('studentRegistration.php'); ?>
+        <!-- End Form Registration -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Student Registration Modal -->
 
 
  <!-- Start Student Login Modal -->
@@ -104,45 +103,27 @@
       </div>
     </div> <!-- End Admin Login Modal -->
 
+    <script type="text/javascript" src=<?= DIRECTORY . "js/sidebar.js"?> ></script>
     <!-- Jquery and Boostrap JavaScript -->
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/popper.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/jquery.min.js" ?> ></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/popper.min.js" ?> ></script>
+
+    <script type="text/javascript" src=<?= DIRECTORY . "js/bootstrap.min.js" ?> ></script>
 
     <!-- Font Awesome JS -->
-    <script type="text/javascript" src="js/all.min.js"></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/all.min.js" ?> ></script>
 
     <!-- Student Testimonial Owl Slider JS  -->
-    <script type="text/javascript" src="js/owl.min.js"></script>
-    <script type="text/javascript" src="js/testyslider.js"></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/owl.min.js" ?> ></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/testyslider.js" ?> ></script>
 
     <!-- Student Ajax Call JavaScript -->
-    <script type="text/javascript" src="js/ajaxrequest.js"></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/ajaxrequest.js" ?> ></script>
 
     <!-- Admin Ajax Call JavaScript -->
-    <script type="text/javascript" src="js/adminajaxrequest.js"></script>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/adminajaxrequest.js" ?> ></script>
 
     <!-- Custom JavaScript -->
-    <script type="text/javascript" src="js/custom.js"></script>
-    <script>
-     $(document).ready(function() {
-         $('#stuRegModalCenter').on('hide.bs.modal', function (e) {
-             // logged for debugging
-             // console.log('Modal is about to be hidden');
-             clearAllStuReg();
-         });
-         $('#stuLoginModalCenter').on('hide.bs.modal', function (e) {
-             // logged for debugging
-             // console.log('Modal is about to be hidden');
-             clearStuLoginWithStatus();
-         });
-     });
-    </script>
-
-
- <style>
-
- </style>
+    <script type="text/javascript" src=<?= DIRECTORY . "js/custom.js" ?> ></script>
   </body>
-
 </html>

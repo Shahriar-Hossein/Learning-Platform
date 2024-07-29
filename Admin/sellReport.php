@@ -2,10 +2,12 @@
 if(!isset($_SESSION)){ 
   session_start(); 
 }
-define('TITLE', 'Sell Report');
-define('PAGE', 'sellreport');
-include('./adminInclude/header.php'); 
 include('../dbConnection.php');
+
+const TITLE = 'Sell Report';
+const PAGE = 'sellreport';
+
+include('./adminInclude/sidebar.php');
 
  if(isset($_SESSION['is_admin_login'])){
   $adminEmail = $_SESSION['adminLogEmail'];

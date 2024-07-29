@@ -2,10 +2,12 @@
 if(!isset($_SESSION)){ 
   session_start(); 
 }
-define('TITLE', 'Add Course');
-define('PAGE', 'addorder');
-include('./adminInclude/header.php'); 
 include('../dbConnection.php');
+
+const TITLE = 'Add Course';
+const PAGE = 'addorder';
+
+include('./adminInclude/sidebar.php');
 
  if(isset($_SESSION['is_admin_login'])){
   $adminEmail = $_SESSION['adminLogEmail'];

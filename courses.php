@@ -1,7 +1,8 @@
 <?php
   include('./dbConnection.php');
   // Header Include from mainInclude 
-  include('./mainInclude/header.php'); 
+  include('./mainInclude/header.php');
+  include
 ?>  
     <div class="container-fluid bg-dark"> <!-- Start Course Page Banner -->
       <div class="row">

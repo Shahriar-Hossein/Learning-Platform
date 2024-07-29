@@ -8,10 +8,10 @@
     <script type="text/javascript" src="../js/all.min.js"></script>
 
     <!-- Admin Ajax Call JavaScript -->
-    <script type="text/javascript" src="..js/adminajaxrequest.js"></script>
+    <script type="text/javascript" src="../js/adminajaxrequest.js"></script>
 
     <!-- Custom JavaScript -->
     <script type="text/javascript" src="../js/custom.js"></script>
-</body>
+  </body>
 
 </html>

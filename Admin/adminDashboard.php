@@ -2,10 +2,12 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-define('TITLE', 'Dashboard');
-define('PAGE', 'dashboard');
-include('./adminInclude/header.php');
 include('../dbConnection.php');
+
+const TITLE = 'Dashboard';
+const PAGE = 'dashboard';
+
+include('./adminInclude/sidebar.php');
 
 if (isset($_SESSION['is_admin_login'])) {
   $adminEmail = $_SESSION['adminLogEmail'];
@@ -108,8 +110,6 @@ $totalsold = $result->num_rows;
     }
     ?>
   </div>
-</div>
-</div>
 </div>
 
 </div> <!-- div Row close from header -->

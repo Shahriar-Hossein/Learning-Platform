@@ -1,8 +1,10 @@
 <?php
-define('TITLE', 'Payment Status');
-define('PAGE', 'paymentstatus');
-include('./adminInclude/header.php'); 
 include('../dbConnection.php');
+
+const TITLE = 'Payment Status';
+const PAGE = 'paymentstatus';
+
+include('./adminInclude/sidebar.php');
 
 // Include SSLCommerz configuration and helper files
 require_once("../sslcommerzConfig.php");
@@ -77,6 +79,9 @@ if (isset($_POST["ORDER_ID"]) && $_POST["ORDER_ID"] != "") {
     }
     ?>
 </div>
+
+</div> <!-- div Row close from header -->
+</div> <!-- div Conatiner-fluid close from header -->
 
 <?php
 include('./adminInclude/footer.php');
