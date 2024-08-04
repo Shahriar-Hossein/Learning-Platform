@@ -4,13 +4,13 @@ if(!isset($_SESSION)){
 }
 include('../dbConnection.php');
 
-
 //
 //if(isset($_SESSION['is_admin_login'])){
 //    $adminEmail = $_SESSION['adminLogEmail'];
 //} else {
 //    echo "<script> location.href='../index.php'; </script>";
 //}
+
 if(isset($_REQUEST['courseSubmitBtn'])){
     // Checking for Empty Fields
     if(($_REQUEST['course_name'] == "") || ($_REQUEST['course_desc'] == "") || ($_REQUEST['course_author'] == "") || ($_REQUEST['course_duration'] == "") || ($_REQUEST['course_price'] == "") || ($_REQUEST['course_original_price'] == "")){

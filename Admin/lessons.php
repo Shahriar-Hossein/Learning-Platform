@@ -36,7 +36,7 @@ include('./adminInclude/sidebar.php');
         $_SESSION['course_id'] = $row['course_id'];
         $_SESSION['course_name'] = $row['course_name'];
         
-        ?>
+  ?>
         <h3 class="mt-5 bg-dark text-white p-2">Course ID : <?php if(isset($row['course_id'])) {echo $row['course_id']; } ?> Course Name: <?php if(isset($row['course_name'])) {echo $row['course_name']; } ?></h3>
         <?php
           $sql = "SELECT * FROM lesson WHERE course_id = {$_REQUEST['checkid']}";

@@ -4,36 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
-<!--  CDN to use tailwindcss    -->
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-      <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href=<?= DIRECTORY . "css/bootstrap.min.css" ?> />
-
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" type="text/css" href=<?= DIRECTORY . "css/all.min.css" ?> />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMuZ+5sN4c5bmVzX8ihzASgN8B6XW0ujM4c5k5s" crossorigin="anonymous">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
-
-    <!-- Student Testimonial Owl Slider CSS -->
-    <link rel="stylesheet" type="text/css" href=<?= DIRECTORY . "css/owl.min.css" ?> />
-    <link rel="stylesheet" type="text/css" href=<?= DIRECTORY . "css/owl.theme.min.css" ?> />
-    <link rel="stylesheet" type="text/css" href=<?= DIRECTORY . "css/testyslider.css" ?> />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href= <?= DIRECTORY . "css/adminstyle.css" ?> />
+    <link rel="stylesheet" href="<?= DIRECTORY . 'css/style.css' ?>" />
 
-    <!-- Custom Style CSS -->
-    <link rel="stylesheet" type="text/css" href=<?= DIRECTORY . "css/style.css" ?>  />
-
-    <title>
-      <?php echo TITLE ?>
-    </title>
+    <title><?= defined('TITLE') ? TITLE : 'My Application' ?></title>
   </head>
-  <body>
-    <div class="min-h-screen flex flex-col justify-between">
-
-
-
+  <body class="flex flex-col min-h-screen">
+    <div class="flex-1">
+      <!-- Page content starts here -->

@@ -8,7 +8,6 @@
 # Folders with images and videos
 /video
 /lessonvid
-/image
 
 # vendor folder
 /vendor/*

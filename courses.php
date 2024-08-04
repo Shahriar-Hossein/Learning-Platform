@@ -2,7 +2,7 @@
   include('./dbConnection.php');
   // Header Include from mainInclude 
   include('./mainInclude/header.php');
-  include
+  
 ?>  
     <div class="container-fluid bg-dark"> <!-- Start Course Page Banner -->
       <div class="row">
@@ -39,7 +39,7 @@
         ?>
     </div>
 </div>
-     
+
 <?php 
   // Contact Us
   include('./contact.php'); 
