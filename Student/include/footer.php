@@ -51,7 +51,7 @@
                 <small id="statusLogMsg"></small>
                 <button type="button" class="btn btn-primary" id="stuLoginBtn" onclick="checkStuLogin()">Login</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="clearStuLoginWithStatus()">Cancel</button>
-               
+
             </div>
         </div>
     </div>

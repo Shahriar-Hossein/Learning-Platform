@@ -30,8 +30,9 @@ if ($result->num_rows > 0) {
 
 const TITLE = 'Dashboard';
 const PAGE = 'dashboard';
+const DIRECTORY = '../';
 
-include('include/sidebar.php');
+include 'include/sidebar.php';
 ?>
 
 <!-- Squares Container -->

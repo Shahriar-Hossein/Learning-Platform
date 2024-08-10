@@ -45,48 +45,47 @@ const PAGE = 'addcourse';
 include('include/sidebar.php');
 ?>
 
-<div class="flex-1 container ml-64 mt-16 p-6">
-    <div class="my-2 py-2 bg-violet-400 text-white shadow-lg rounded-lg">
-        <h3 class="text-center text-4xl font-extrabold my-2">Add New Course</h3>
-        <p class="text-center text-lg text-gray-600 mb-2">Fill in the details below to add a new course to the system. All fields are required.</p>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg p-8">
-        <?php if (isset($msg)) { echo $msg; } ?>
-        <form action="" method="POST" enctype="multipart/form-data" class="space-y-6">
-            <div class="flex flex-col">
-                <label for="course_name" class="block text-violet-600 font-medium mb-2">Course Name</label>
-                <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_name" name="course_name">
-            </div>
-            <div class="flex flex-col">
-                <label for="course_desc" class="block text-violet-600 font-medium mb-2">Course Description</label>
-                <textarea class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_desc" name="course_desc" rows="4"></textarea>
-            </div>
-            <div class="flex flex-col">
-                <label for="course_author" class="block text-violet-600 font-medium mb-2">Author</label>
-                <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_author" name="course_author">
-            </div>
-            <div class="flex flex-col">
-                <label for="course_duration" class="block text-violet-600 font-medium mb-2">Course Duration</label>
-                <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_duration" name="course_duration">
-            </div>
-            <div class="flex flex-col">
-                <label for="course_original_price" class="block text-violet-600 font-medium mb-2">Course Original Price</label>
-                <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_original_price" name="course_original_price" onkeypress="isInputNumber(event)">
-            </div>
-            <div class="flex flex-col">
-                <label for="course_price" class="block text-violet-600 font-medium mb-2">Course Selling Price</label>
-                <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_price" name="course_price" onkeypress="isInputNumber(event)">
-            </div>
-            <div class="flex flex-col">
-                <label for="course_img" class="block text-violet-600 font-medium mb-2">Course Image</label>
-                <input type="file" class="form-control-file w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_img" name="course_img">
-            </div>
-            <div class="text-center mt-6">
-                <button type="submit" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-lg transition duration-150" id="courseSubmitBtn" name="courseSubmitBtn">Submit</button>
-                <a href="courses.php" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg transition duration-150 ml-4">Close</a>
-            </div>
-        </form>
-    </div>
+<div class="my-2 py-2 bg-violet-400 text-white shadow-lg rounded-lg">
+    <h3 class="text-center text-4xl font-extrabold my-2">Add New Course</h3>
+    <p class="text-center text-lg text-gray-600 mb-2">Fill in the details below to add a new course to the system. All fields are required.</p>
+</div>
+
+<div class="bg-white shadow-lg rounded-lg p-8">
+    <?php if (isset($msg)) { echo $msg; } ?>
+    <form action="" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <div class="flex flex-col">
+            <label for="course_name" class="block text-violet-600 font-medium mb-2">Course Name</label>
+            <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_name" name="course_name">
+        </div>
+        <div class="flex flex-col">
+            <label for="course_desc" class="block text-violet-600 font-medium mb-2">Course Description</label>
+            <textarea class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_desc" name="course_desc" rows="4"></textarea>
+        </div>
+        <div class="flex flex-col">
+            <label for="course_author" class="block text-violet-600 font-medium mb-2">Author</label>
+            <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_author" name="course_author">
+        </div>
+        <div class="flex flex-col">
+            <label for="course_duration" class="block text-violet-600 font-medium mb-2">Course Duration</label>
+            <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_duration" name="course_duration">
+        </div>
+        <div class="flex flex-col">
+            <label for="course_original_price" class="block text-violet-600 font-medium mb-2">Course Original Price</label>
+            <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_original_price" name="course_original_price" onkeypress="isInputNumber(event)">
+        </div>
+        <div class="flex flex-col">
+            <label for="course_price" class="block text-violet-600 font-medium mb-2">Course Selling Price</label>
+            <input type="text" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_price" name="course_price" onkeypress="isInputNumber(event)">
+        </div>
+        <div class="flex flex-col">
+            <label for="course_img" class="block text-violet-600 font-medium mb-2">Course Image</label>
+            <input type="file" class="form-control-file w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" id="course_img" name="course_img">
+        </div>
+        <div class="text-center mt-6">
+            <button type="submit" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-lg transition duration-150" id="courseSubmitBtn" name="courseSubmitBtn">Submit</button>
+            <a href="courses.php" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg transition duration-150 ml-4">Close</a>
+        </div>
+    </form>
 </div>
 
 <!-- Only Number for input fields -->

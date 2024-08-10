@@ -1,5 +1,4 @@
 <?php
-const DIRECTORY = '../';
 include ('../mainInclude/header.php');
 ?>
 

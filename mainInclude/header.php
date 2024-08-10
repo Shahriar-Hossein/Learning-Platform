@@ -17,8 +17,15 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= DIRECTORY . 'css/style.css' ?>" />
 
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
     <title><?= defined('TITLE') ? TITLE : 'My Application' ?></title>
   </head>
+
   <body class="flex flex-col min-h-screen">
     <div class="flex-1">
       <!-- Page content starts here -->

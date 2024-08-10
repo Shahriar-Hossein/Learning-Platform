@@ -1,67 +1,92 @@
 <?php
-if(!isset($_SESSION)){ 
-  session_start(); 
+if (!isset($_SESSION)) {
+    session_start();
 }
 include('../dbConnection.php');
 
 const TITLE = 'Students';
 const PAGE = 'students';
+const DIRECTORY = '../';
 
-include('./adminInclude/sidebar.php');
+// Check if admin is logged in
+if (isset($_SESSION['admin_id'])) {
+    $admin_id = $_SESSION['admin_id'];
+} else {
+    echo "<script> location.href='../index.php'; </script>";
+    exit();
+}
 
- if(isset($_SESSION['is_admin_login'])){
-  $adminEmail = $_SESSION['adminLogEmail'];
- } else {
-  echo "<script> location.href='../index.php'; </script>";
- }
+// Fetch student details
+$sql = "SELECT * FROM student";
+$result = $conn->query($sql);
+$students = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $students[] = $row;
+    }
+}
+
+// Handle delete request
+if (isset($_REQUEST['delete'])) {
+    $delete_sql = "DELETE FROM student WHERE stu_id = {$_REQUEST['id']}";
+    if ($conn->query($delete_sql) === TRUE) {
+        // Refresh the page after deleting the record
+        echo '<meta http-equiv="refresh" content="0;URL=?deleted" />';
+    } else {
+        $error_message = 'Unable to Delete Data';
+    }
+}
+
+include('./include/sidebar.php');
 ?>
-  <div class="col-sm-9 mt-5">
-    <!--Table-->
-    <p class=" bg-dark text-white p-2">List of Students</p>
-    <?php
-      $sql = "SELECT * FROM student";
-      $result = $conn->query($sql);
-      if($result->num_rows > 0){
-       echo '<table class="table">
-       <thead>
-        <tr>
-         <th scope="col">Student ID</th>
-         <th scope="col">Name</th>
-         <th scope="col">Email</th>
-         <th scope="col">Action</th>
-        </tr>
-       </thead>
-       <tbody>';
-        while($row = $result->fetch_assoc()){
-          echo '<tr>';
-          echo '<th scope="row">'.$row["stu_id"].'</th>';
-          echo '<td>'. $row["stu_name"].'</td>';
-          echo '<td>'.$row["stu_email"].'</td>';
-          echo '<td><form action="editstudent.php" method="POST" class="d-inline"> <input type="hidden" name="id" value='. $row["stu_id"] .'><button type="submit" class="btn btn-info mr-3" name="view" value="View"><i class="fas fa-pen"></i></button></form>  
-          <form action="" method="POST" class="d-inline"><input type="hidden" name="id" value='. $row["stu_id"] .'><button type="submit" class="btn btn-secondary" name="delete" value="Delete"><i class="far fa-trash-alt"></i></button></form></td>
-         </tr>';
-        }
 
-        echo '</tbody>
-        </table>';
-      } else {
-        echo "0 Result";
-      }
-      if(isset($_REQUEST['delete'])){
-       $sql = "DELETE FROM student WHERE stu_id = {$_REQUEST['id']}";
-       if($conn->query($sql) === TRUE){
-         // echo "Record Deleted Successfully";
-         // below code will refresh the page after deleting the record
-         echo '<meta http-equiv="refresh" content= "0;URL=?deleted" />';
-         } else {
-           echo "Unable to Delete Data";
-         }
-      }
-     ?>
-  </div>
- </div>  <!-- div Row close from header -->
- <div><a class="btn btn-danger box" href="addnewstudent.php"><i class="fas fa-plus fa-2x"></i></a></div>
-</div>  <!-- div Conatiner-fluid close from header -->
+<div class="col-sm-9 mt-5">
+    <!-- Title -->
+    <div class="my-2 py-2 bg-violet-400 text-white shadow-lg rounded-lg">
+        <h3 class="text-center text-4xl font-extrabold my-2">List of Students</h3>
+        <p class="text-center text-lg text-gray-600 mb-2">This is the list of all registered students.</p>
+    </div>
+
+    <!-- Table -->
+    <?php if (!empty($students)) : ?>
+      <div class="bg-white shadow-lg rounded-lg overflow-auto">
+        <table class="min-w-full leading-normal overflow-auto min-w-[500px]">
+        <thead>
+            <tr>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Student ID</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Name</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Email</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Occupation</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">BIO</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <?php foreach ($students as $student) : ?>
+            <tr class="border-b border-violet-200 hover:bg-violet-50 transition duration-150 ease-in-out">
+              <td class="py-4 px-4 text-sm"><?= $student["id"] ?></td>
+              <td class="py-4 px-4 text-sm"><?= $student["name"] ?></td>
+              <td class="py-4 px-4 text-sm"><?= $student["email"] ?></td>
+              <td class="py-4 px-4 text-sm"><?= $student["occupation"] ?></td>
+              <td class="py-4 px-4 text-sm"><?= $student["bio"] ?></td>
+            </tr>
+        <?php endforeach; ?>
+
+        </tbody>
+        </table>
+        </div>
+    <?php else : ?>
+      <p class="text-center py-4">No students found</p>
+    <?php endif; ?>
+
+    <!-- // Display error message if any -->
+    <?php if (isset($error_message)) : ?>
+        <p class="text-center text-red-500"><?= $error_message ?></p>
+    <?php endif; ?>
+    
+</div> <!-- div col-sm-9 close -->
+
+
 <?php
-include('./adminInclude/footer.php'); 
+include('../mainInclude/footer.php');
 ?>

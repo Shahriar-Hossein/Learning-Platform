@@ -1,20 +1,20 @@
 <?php 
 include_once('../dbConnection.php');
- if(!isset($_SESSION)){ 
-   session_start(); 
- } 
- if(isset($_SESSION['is_login'])){
-  $stuLogEmail = $_SESSION['stuLogEmail'];
- } 
- // else {
- //  echo "<script> location.href='../index.php'; </script>";
- // }
- if(isset($stuLogEmail)){
-  $sql = "SELECT stu_img FROM student WHERE stu_email = '$stuLogEmail'";
-  $result = $conn->query($sql);
-  $row = $result->fetch_assoc();
-  $stu_img = $row['stu_img'];
- }
+if(!isset($_SESSION)){ 
+    session_start(); 
+} 
+// if(isset($_SESSION['student_id'])){
+//     $student_id = $_SESSION['student_id'];
+// } 
+// else {
+//     echo "<script> location.href='../index.php'; </script>";
+// }
+if(isset($stuLogEmail)){
+    $sql = "SELECT stu_img FROM student WHERE stu_email = '$stuLogEmail'";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $stu_img = $row['stu_img'];
+}
 ?>
 
 <!DOCTYPE html>

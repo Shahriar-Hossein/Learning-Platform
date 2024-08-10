@@ -1,100 +1,74 @@
 <?php
-if(!isset($_SESSION)){ 
-  session_start(); 
+if (!isset($_SESSION)) {
+    session_start();
 }
 include('../dbConnection.php');
+
+// Check session validity
+// if (!isset($_SESSION['is_admin_login'])) {
+//     echo "<script> location.href='../index.php'; </script>";
+//     exit();
+// }
+
+// Fetch lessons data securely
+$lessons = [];
+$sql = "SELECT * FROM lesson";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $lessons[] = $row;
+    }
+}
 
 const TITLE = 'Lessons';
 const PAGE = 'lessons';
 
-include('./adminInclude/sidebar.php');
-
- if(isset($_SESSION['is_admin_login'])){
-  $adminEmail = $_SESSION['adminLogEmail'];
- } else {
-  echo "<script> location.href='../index.php'; </script>";
- }
- ?>
-
-<div class="col-sm-9 mt-5  mx-3">
-  <form action="" class="mt-3 form-inline d-print-none">
-    <div class="form-group mr-3">
-      <label for="checkid">Enter Course ID: </label>
-      <input type="text" class="form-control ml-3" id="checkid" name="checkid" onkeypress="isInputNumber(event)">
-    </div>
-    <button type="submit" class="btn btn-danger">Search</button>
-  </form>
-  <?php
-  $sql = "SELECT course_id FROM course";
-  $result = $conn->query($sql);
-  while($row = $result->fetch_assoc()){
-    if(isset($_REQUEST['checkid']) && $_REQUEST['checkid'] == $row['course_id']){
-      $sql = "SELECT * FROM course WHERE course_id = {$_REQUEST['checkid']}";
-      $result = $conn->query($sql);
-      $row = $result->fetch_assoc();
-      if(($row['course_id']) == $_REQUEST['checkid']){ 
-        $_SESSION['course_id'] = $row['course_id'];
-        $_SESSION['course_name'] = $row['course_name'];
-        
-  ?>
-        <h3 class="mt-5 bg-dark text-white p-2">Course ID : <?php if(isset($row['course_id'])) {echo $row['course_id']; } ?> Course Name: <?php if(isset($row['course_name'])) {echo $row['course_name']; } ?></h3>
-        <?php
-          $sql = "SELECT * FROM lesson WHERE course_id = {$_REQUEST['checkid']}";
-          $result = $conn->query($sql);
-          echo '<table class="table">
-            <thead>
-              <tr>
-              <th scope="col">Lesson ID</th>
-              <th scope="col">Lesson Name</th>
-              <th scope="col">Lesson Link</th>
-              <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>';
-              while($row = $result->fetch_assoc()){
-                echo '<tr>';
-                echo '<th scope="row">'.$row["lesson_id"].'</th>';
-                echo '<td>'. $row["lesson_name"].'</td>';
-                echo '<td>'.$row["lesson_link"].'</td>';
-                echo '<td><form action="editlesson.php" method="POST" class="d-inline"> <input type="hidden" name="id" value='. $row["lesson_id"] .'><button type="submit" class="btn btn-info mr-3" name="view" value="View"><i class="fas fa-pen"></i></button></form>  
-                <form action="" method="POST" class="d-inline"><input type="hidden" name="id" value='. $row["lesson_id"] .'><button type="submit" class="btn btn-secondary" name="delete" value="Delete"><i class="far fa-trash-alt"></i></button></form></td>
-              </tr>';
-              }
-              echo '</tbody>
-             </table>';
-        } else {
-          echo '<div class="alert alert-dark mt-4" role="alert">
-          Course Not Found ! </div>';
-        }
-        if(isset($_REQUEST['delete'])){
-         $sql = "DELETE FROM lesson WHERE lesson_id = {$_REQUEST['id']}";
-         if($conn->query($sql) === TRUE){
-           // echo "Record Deleted Successfully";
-           // below code will refresh the page after deleting the record
-           echo '<meta http-equiv="refresh" content= "0;URL=?deleted" />';
-           } else {
-             echo "Unable to Delete Data";
-           } 
-     } 
-   } 
-  }?>
-  
-</div>
-<!-- Only Number for input fields -->
-<script>
-  function isInputNumber(evt) {
-    var ch = String.fromCharCode(evt.which);
-    if (!(/[0-9]/.test(ch))) {
-      evt.preventDefault();
-    }
-  }
-</script>
- </div>  <!-- div Row close from header -->
- <?php if(isset($_SESSION['course_id'])){
-   echo '<div><a class="btn btn-danger box" href="./addLesson.php"><i class="fas fa-plus fa-2x"></i></a></div>';
-   } ?>
- 
-</div>  <!-- div Conatiner-fluid close from header -->
-<?php
-include('./adminInclude/footer.php'); 
+include('include/sidebar.php');
 ?>
+<div class="my-2 py-2 bg-violet-400 text-white shadow-lg rounded-lg">
+    <h3 class="text-center text-4xl font-extrabold my-2">Lessons</h3>
+    <p class="text-center text-lg text-gray-600 mb-2">This is the list of all the lessons you have created.</p>
+</div>
+
+<div class="flex justify-end my-2">
+    <a href="add-lesson.php" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center justify-center">
+        <i class="fas fa-plus fa-lg mr-2"></i> Add Lesson
+    </a>
+</div>
+
+<div class="flex justify-center">
+    <div class="w-full bg-white shadow-lg rounded-lg overflow-x-auto">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">SL NO.</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Course Name</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Lesson Name</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($lessons as $index => $lesson): ?>
+                <tr class="border-b border-violet-200 hover:bg-violet-50 transition duration-150 ease-in-out">
+                    <td class="py-4 px-4 text-sm"><?= $index + 1 ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($lesson["course_name"]) ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($lesson["lesson_name"]) ?></td>
+                    <td class="py-4 px-4 text-sm relative">
+                        <button onclick="toggleDropdown(event, 'dropdown<?= $index + 1 ?>')" class="text-violet-600 px-4 py-2 rounded border transition duration-150 ease-in-out">Action</button>
+                        <div id="dropdown<?= $index + 1 ?>" class="hidden dropdown-content absolute bg-white z-10 shadow-md rounded mt-2 w-24">
+                            <a href="#" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">Edit</a>
+                            <a href="#" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php include('../mainInclude/footer.php'); ?>
+
+

@@ -1,157 +1,133 @@
 <?php
 include('./dbConnection.php');
 
-const TITLE = 'Maria\'s School';
-const PAGE = 'Maria\'s School';
-const DIRECTORY = '';
+$courses = [];
+$course_sql = "SELECT * FROM course LIMIT 6";
+$course_sql_result = $conn->query($course_sql);
+if ($course_sql_result->num_rows > 0) {
+  while ($row = $course_sql_result->fetch_assoc()) {
+    $courses[] = $row;
+  }
+}
 
-// Header Include from mainInclude
-include('./mainInclude/header.php');
-include ('./mainInclude/navbar.php');
+const TITLE = "Maria's School";
+const PAGE = "Maria's School";
+const DIRECTORY = "";
+
+include( DIRECTORY . 'mainInclude/navbar.php');
 ?>
 
-<div class="position-relative main-banner">
-  <img src="image/banner.jpg" class="banner-image" alt="Website Banner">
-  <div class="position-absolute home-banner-position" >
-    <h1 class="">Maria's School</h1>
-    <small class="">Learn and Grow</small><br />
-    <?php
-      if(!isset($_SESSION['is_login'])){
-        echo '<a class="btn btn-primary mt-3" href="#" data-toggle="modal" data-target="#stuRegModalCenter">Get Started</a>';
-      } else {
-        echo '<a class="btn btn-primary mt-3" href="Student/studentProfile.php">My Profile</a>';
-      }
-    ?>
+<div class="relative main-banner">
+  <img src="image/banner.jpg" class="w-full h-96 object-cover" alt="Website Banner">
+  <div class="absolute inset-0 flex flex-col items-center justify-center bg-violet-300 bg-opacity-50 text-white">
+    <h1 class="text-5xl font-bold">Maria's School</h1>
+    <small class="text-xl mt-2">Learn and Grow</small><br />
+    <?php if (!isset($_SESSION['is_login'])): ?>
+      <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded mt-3" href="#" data-toggle="modal" data-target="#stuRegModalCenter">Get Started</a>
+    <?php else: ?>
+      <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded mt-3" href="Student/studentProfile.php">My Profile</a>
+    <?php endif; ?>
   </div>
 </div>
 
-<div class="container-fluid bg-secondary txt-banner"> <!-- Start Text Banner -->
-    <div class="row bottom-banner">
-      <div class="col-sm">
-        <h5> <i class="fas fa-book-open mr-3"></i> 100+ Online Courses</h5>
-      </div>
-      <div class="col-sm">
-        <h5><i class="fas fa-users mr-3"></i> Expert Instructors</h5>
-      </div>
-      <div class="col-sm">
-        <h5><i class="fas fa-keyboard mr-3"></i> Lifetime Access</h5>
-      </div>
-      <div class="col-sm">
-        <h5><i class="fas fa-rupee-sign mr-3"></i> Money Back Guarantee*</h5>
-      </div>
-    </div>
-</div> <!-- End Text Banner -->
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Popular Courses</h1>
-    <div class="row">
-        <?php
-        $sql = "SELECT * FROM course LIMIT 6";
-        $result = $conn->query($sql);
-        if($result->num_rows > 0){
-            while($row = $result->fetch_assoc()){
-                $course_id = $row['course_id'];
-                echo '
-          <div class="col-md-4 mb-4">
-            <a href="coursedetails.php?course_id='.$course_id.'" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="'.str_replace('..', '.', $row['course_img']).'" class="card-img-top" alt="Course Image" />
-                <div class="card-body">
-                  <h5 class="card-title">'.$row['course_name'].'</h5>
-                </div>
-                <div class="card-footer">
-                  <p class="card-text d-inline">Price: <small><del>&#2547; '.$row['course_original_price'].'</del></small> <span class="font-weight-bolder">&#2547; '.$row['course_price'].'</span></p>
-                  <span class="btn btn-primary text-white">Enroll</span>
-                </div>
-              </div>
-            </a>
-          </div>';
-            }
-        }
-        ?>
+<!-- Start Text Banner -->
+<div class="bg-violet-700 text-white py-3"> 
+  <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+    <div>
+      <h5 class="flex items-center justify-center"><i class="fas fa-book-open mr-3"></i>100+ Online Courses</h5>
     </div>
+    <div>
+      <h5 class="flex items-center justify-center"><i class="fas fa-users mr-3"></i>Expert Instructors</h5>
+    </div>
+    <div>
+      <h5 class="flex items-center justify-center"><i class="fas fa-keyboard mr-3"></i>Lifetime Access</h5>
+    </div>
+    <div>
+      <h5 class="flex items-center justify-center">&#2547; Money Back Guarantee*</h5>
+    </div>
+  </div>
 </div>
-<div class="text-center m-2">
-  <a class="btn btn-danger btn-sm" href="courses.php">View All Course</a>
+<!-- End Text Banner -->
+
+
+<div class="container mx-auto mt-10">
+  <h2 class="text-center text-4xl font-extrabold text-violet-700 mb-8">Popular Courses</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-2">
+    
+  <?php foreach ($courses as $course): ?>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <a href="<?= 'coursedetails.php?course_id=' .$course['course_id'] ?>" class="text-gray-900 no-underline">
+        <img src="<?= str_replace('..', '.', $course['course_img']) ?>" class="w-full h-48 object-cover" alt="Course Image">
+        <div class="p-4">
+          <h5 class="font-bold text-lg"><?= $course['course_name'] ?></h5>
+        </div>
+        <div class="p-4 bg-gray-100">
+          <p class="text-sm">Price: <small class="line-through">&#2547; <?= $course['course_original_price'] ?></small> <span class="text-lg font-bold">&#2547; <?= $course['course_price'] ?></span></p>
+          <span class="inline-block bg-violet-600 hover:bg-violet-700 text-white py-1 px-3 rounded mt-2">Enroll</span>
+        </div>
+      </a>
+    </div>
+  <?php endforeach; ?>
+
+  </div>
+  
+  <div class="text-center m-2 mt-6">
+    <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded" href="courses.php">View All Courses</a>
+  </div>
 </div>
+
 
 <?php
 // Contact Us
-include('./contact.php');
+include('components/contact.php');
+
+include('components/testimonials.php');
 ?>
 
-<!-- Start Students Testimonial -->
-<div class="container-fluid mt-5" style="background-color: #4B7289" id="Feedback">
-<h1 class="text-center testyheading p-4"> Student's Feedback </h1>
-<div class="row">
-  <div class="col-md-12">
-    <div id="testimonial-slider" class="owl-carousel">
-    <?php
-      $sql = "SELECT s.stu_name, s.stu_occ, s.stu_img, f.f_content FROM student AS s JOIN feedback AS f ON s.stu_id = f.stu_id";
-      $result = $conn->query($sql);
-      if($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()){
-          $s_img = $row['stu_img'];
-          $n_img = str_replace('../','',$s_img)
-    ?>
-      <div class="testimonial">
-        <p class="description">
-        <?php echo $row['f_content'];?>
-        </p>
-        <div class="pic">
-          <img src="<?php echo $n_img; ?>" alt=""/>
-        </div>
-        <div class="testimonial-prof">
-          <h4><?php echo $row['stu_name']; ?></h4>
-          <small><?php echo $row['stu_occ']; ?></small>
-        </div>
-      </div>
-      <?php }} ?>
+<!-- Start Social Follow -->
+<div class="bg-violet-700 text-white py-2">
+  <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+    <div>
+      <a class="hover:text-violet-300" href="#"><i class="fab fa-facebook-f mr-2"></i> Facebook</a>
+    </div>
+    <div>
+      <a class="hover:text-violet-300" href="#"><i class="fab fa-twitter mr-2"></i> Twitter</a>
+    </div>
+    <div>
+      <a class="hover:text-violet-300" href="#"><i class="fab fa-whatsapp mr-2"></i> WhatsApp</a>
+    </div>
+    <div>
+      <a class="hover:text-violet-300" href="#"><i class="fab fa-instagram mr-2"></i> Instagram</a>
     </div>
   </div>
 </div>
-</div>  <!-- End Students Testimonial -->
+<!-- End Social Follow -->
 
-<div class="container-fluid bg-danger"> <!-- Start Social Follow -->
-    <div class="row text-white text-center p-1">
-      <div class="col-sm">
-        <a class="text-white social-hover" href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
-      </div>
-      <div class="col-sm">
-        <a class="text-white social-hover" href="#"><i class="fab fa-twitter"></i> Twitter</a>
-      </div>
-      <div class="col-sm">
-        <a class="text-white social-hover" href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      </div>
-      <div class="col-sm">
-        <a class="text-white social-hover" href="#"><i class="fab fa-instagram"></i> Instagram</a>
-      </div>
-    </div>
-</div> <!-- End Social Follow -->
 
 <!-- Start About Section -->
-<div class="container-fluid p-4" style="background-color:#E9ECEF">
-  <div class="container" style="background-color:#E9ECEF">
-    <div class="row text-center">
-      <div class="col-sm">
-        <h5>About Us</h5>
-          <p>iSchool provides universal access to the world’s best education, partnering with top universities and organizations to offer courses online.</p>
-      </div>
-      <div class="col-sm">
-        <h5>Category</h5>
-        <a class="text-dark" href="#">Web Development</a><br />
-        <a class="text-dark" href="#">Web Designing</a><br />
-        <a class="text-dark" href="#">Android App Dev</a><br />
-        <a class="text-dark" href="#">iOS Development</a><br />
-        <a class="text-dark" href="#">Data Analysis</a><br />
-      </div>
-      <div class="col-sm">
-        <h5>Contact Us</h5>
-        <p>Maria's School Pvt Ltd <br> Near Police Camp <br> Mirpur-10, Dhaka  </p>
-      </div>
+<div class="bg-gray-100 py-8">
+  <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+    <div>
+      <h5 class="text-2xl font-extrabold text-violet-700 mb-4">About Us</h5>
+      <p class="text-gray-700">Maria's School provides universal access to the world’s best education, partnering with top universities and organizations to offer courses online.</p>
+    </div>
+    <div>
+      <h5 class="text-2xl font-extrabold text-violet-700 mb-4">Category</h5>
+      <a class="text-gray-700 hover:text-violet-600" href="#">Web Development</a><br />
+      <a class="text-gray-700 hover:text-violet-600" href="#">Web Designing</a><br />
+      <a class="text-gray-700 hover:text-violet-600" href="#">Android App Dev</a><br />
+      <a class="text-gray-700 hover:text-violet-600" href="#">iOS Development</a><br />
+      <a class="text-gray-700 hover:text-violet-600" href="#">Data Analysis</a><br />
+    </div>
+    <div>
+      <h5 class="text-2xl font-extrabold text-violet-700 mb-4">Contact Us</h5>
+      <p class="text-gray-700">Maria's School Pvt Ltd <br> Near Police Camp <br> Mirpur-Shewrapara, Dhaka</p>
     </div>
   </div>
-</div> <!-- End About Section -->
+</div>
+<!-- End About Section -->
+
 
 <?php
 // Footer Include from mainInclude

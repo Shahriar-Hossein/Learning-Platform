@@ -1,7 +1,4 @@
-<?php
-const DIRECTORY = '../';
-include('../mainInclude/header.php');
-?>
+<?php include '../mainInclude/header.php'; ?>
 
 <!-- Navbar -->
 <nav class="bg-violet-500 text-white fixed top-0 w-full z-20 shadow-lg">
@@ -18,7 +15,7 @@ include('../mainInclude/header.php');
                 <span>Maria's School</span>
             </h1>
             <!-- Subtitle -->
-            <p class="text-sm text-violet-300 ml-4">Instructors Panel</p>
+            <p class="text-sm text-violet-300 ml-4">Admin Panel</p>
         </div>
     </div>
 </nav>
@@ -29,8 +26,8 @@ include('../mainInclude/header.php');
         <nav class="space-y-2">
             <a href="dashboard.php" class="<?= TITLE == 'Dashboard' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Dashboard</a>
             <a href="courses.php" class="<?= TITLE == 'Courses' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Courses</a>
-            <a href="add-course.php" class="<?= TITLE == 'Add Course' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Add Course</a>
             <a href="lessons.php" class="<?= TITLE == 'Lessons' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Lessons</a>
+            <a href="instructors.php" class="<?= TITLE == 'Instructor' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Instructors</a>
             <a href="students.php" class="<?= TITLE == 'Students' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Students</a>
             <a href="../logout.php" class="block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Logout</a>
         </nav>

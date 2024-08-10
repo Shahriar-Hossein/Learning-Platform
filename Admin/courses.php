@@ -1,68 +1,93 @@
 <?php
-if(!isset($_SESSION)){ 
-  session_start(); 
+if(!isset($_SESSION)){
+    session_start();
 }
 include('../dbConnection.php');
+
+//if(isset($_SESSION['is_admin_login'])){
+//    $adminEmail = $_SESSION['adminLogEmail'];
+//} else {
+//    echo "<script> location.href='../index.php'; </script>";
+//}
+
+$courses = [];
+$sql = "SELECT * FROM course";
+$result = $conn->query($sql);
+if($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()){
+        $courses[] = $row;
+    }
+}
 
 const TITLE = 'Courses';
 const PAGE = 'courses';
 
-include('./adminInclude/sidebar.php');
+include('include/sidebar.php');
+?>
 
- if(isset($_SESSION['is_admin_login'])){
-  $adminEmail = $_SESSION['adminLogEmail'];
- } else {
-  echo "<script> location.href='../index.php'; </script>";
- }
- ?>
+<div class="my-2 py-2 bg-violet-400 text-white shadow-lg rounded-lg">
+    <h3 class="text-center text-4xl font-extrabold my-2">Courses</h3>
+    <p class="text-center text-lg text-gray-600 mb-2">This is the list of all the courses you have created.</p>
+</div>
 
-  <div class="col-sm-9 mt-5">
-    <!--Table-->
-    <p class=" bg-dark text-white p-2">List of Courses</p>
-    <?php
-      $sql = "SELECT * FROM course";
-      $result = $conn->query($sql);
-      if($result->num_rows > 0){
-       echo '<table class="table">
-       <thead>
-        <tr>
-         <th scope="col">Course ID</th>
-         <th scope="col">Name</th>
-         <th scope="col">Author</th>
-         <th scope="col">Action</th>
-        </tr>
-       </thead>
-       <tbody>';
-        while($row = $result->fetch_assoc()){
-          echo '<tr>';
-          echo '<th scope="row">'.$row["course_id"].'</th>';
-          echo '<td>'. $row["course_name"].'</td>';
-          echo '<td>'.$row["course_author"].'</td>';
-          echo '<td><form action="editcourse.php" method="POST" class="d-inline"> <input type="hidden" name="id" value='. $row["course_id"] .'><button type="submit" class="btn btn-info mr-3" name="view" value="View"><i class="fas fa-pen"></i></button></form>  
-          <form action="" method="POST" class="d-inline"><input type="hidden" name="id" value='. $row["course_id"] .'><button type="submit" class="btn btn-secondary" name="delete" value="Delete"><i class="far fa-trash-alt"></i></button></form></td>
-         </tr>';
-        }
+<!--        <button onclick="toggleSidebar()" class="lg:hidden bg-blue-500 text-white px-4 py-2 rounded mb-4">Toggle Sidebar</button>-->
 
-        echo '</tbody>
-        </table>';
-      } else {
-        echo "0 Result";
-      }
-      if(isset($_REQUEST['delete'])){
-       $sql = "DELETE FROM course WHERE course_id = {$_REQUEST['id']}";
-       if($conn->query($sql) === TRUE){
-         // echo "Record Deleted Successfully";
-         // below code will refresh the page after deleting the record
-         echo '<meta http-equiv="refresh" content= "0;URL=?deleted" />';
-         } else {
-           echo "Unable to Delete Data";
-         }
-      }
-     ?>
-  </div>
- </div>  <!-- div Row close from header -->
- <div><a class="btn btn-danger box" href="./addCourse.php"><i class="fas fa-plus fa-2x"></i></a></div>
-</div>  <!-- div Conatiner-fluid close from header -->
+<div class="flex justify-end my-2">
+    <a href="add-course.php" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center justify-center">
+        <i class="fas fa-plus fa-lg mr-2"></i> Add Course
+    </a>
+</div>
+
+<div class="flex justify-center">
+    <div class="w-full bg-white shadow-lg rounded-lg overflow-auto">
+        <table class="min-w-full leading-normal overflow-auto min-w-[500px]">
+            <thead>
+            <tr>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">SL NO.</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Course Name</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Course Duration</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Course Original Price</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Course Price</th>
+                <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase tracking-wider">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!--                If table is empty    -->
+            <?php if (empty($courses)): ?>
+                <tr>
+                    <td colspan="6" class="text-center py-4">No courses found</td>
+                </tr>
+            <?php endif; ?>
+
+            <!--                PHP loop        -->
+            <?php
+            foreach ($courses as $index => $course):
+            ?>
+                <tr class="border-b border-violet-200 hover:bg-violet-50 transition duration-150 ease-in-out">
+                    <td class="py-4 px-4 text-sm"><?= $index + 1 ?></td>
+                    <td class="py-4 px-4 text-sm"><?= $course["course_name"] ?></td>
+                    <td class="py-4 px-4 text-sm"><?= $course["course_duration"] ?></td>
+                    <td class="py-4 px-4 text-sm"><?= $course["course_price"] ?></td>
+                    <td class="py-4 px-4 text-sm"><?= $course["course_original_price"] ?></td>
+                    <td class="py-4 px-4 text-sm relative">
+                        <button onclick="toggleDropdown(event, 'dropdown<?= $index + 1 ?>')" class="text-violet-600 px-4 py-2 rounded border transition duration-150 ease-in-out">Action</button>
+                        <div id="dropdown<?= $index + 1 ?>" class="hidden dropdown-content absolute bg-white z-10 shadow-md rounded mt-2 w-24">
+                            <a href="#" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">View</a>
+                            <a href="<?= 'edit-course.php?id='. $course['course_id'] ?>" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">Edit</a>
+                            <a href="#" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--    <div><a class="btn btn-danger box" href="./addCourse.php"><i class="fas fa-plus fa-2x"></i></a></div>-->
 <?php
-include('./adminInclude/footer.php'); 
+include('../mainInclude/footer.php');
 ?>
