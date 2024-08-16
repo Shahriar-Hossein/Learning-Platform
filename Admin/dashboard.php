@@ -17,6 +17,10 @@ $sql = "SELECT * FROM courseorder";
 $result = $conn->query($sql);
 $totalSold = $result->num_rows;
 
+$sql = "SELECT * FROM instructors";
+$result = $conn->query($sql);
+$totalInstructor = $result->num_rows;
+
 $sql = "SELECT co.*, c.course_name, c.course_price
         FROM courseorder co
         INNER JOIN course c ON co.course_id = c.course_id";
@@ -53,6 +57,12 @@ include 'include/sidebar.php';
     <div class="bg-white w-full sm:w-64 md:w-72 lg:w-80 h-40 p-4 rounded shadow-xl flex flex-col items-center justify-center text-center">
         <span class="text-3xl font-bold"> <?= $totalSold ?> </span>
         <span class="text-gray-600 mt-2">Sold Courses</span>
+    </div>
+
+    <!-- Total Instructors -->
+    <div class="bg-white w-full sm:w-64 md:w-72 lg:w-80 h-40 p-4 rounded shadow-xl flex flex-col items-center justify-center text-center">
+        <span class="text-3xl font-bold"> <?= $totalInstructor ?> </span>
+        <span class="text-gray-600 mt-2">Total Instructors</span>
     </div>
 </div>
 
