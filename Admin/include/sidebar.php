@@ -27,7 +27,7 @@
             <a href="dashboard.php" class="<?= TITLE == 'Dashboard' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Dashboard</a>
             <a href="courses.php" class="<?= TITLE == 'Courses' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Courses</a>
             <a href="lessons.php" class="<?= TITLE == 'Lessons' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Lessons</a>
-            <a href="instructors.php" class="<?= TITLE == 'Instructor' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Instructors</a>
+            <a href="instructors.php" class="<?= TITLE == 'Instructors' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Instructors</a>
             <a href="students.php" class="<?= TITLE == 'Students' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Students</a>
             <a href="../logout.php" class="block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Logout</a>
         </nav>
