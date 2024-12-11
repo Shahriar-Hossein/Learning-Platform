@@ -10,17 +10,37 @@ include('../dbConnection.php');
 //     exit();
 // }
 
-// Fetch lessons data securely
+// Securely retrieve the instructor ID from the session
+$instructor_id = $_SESSION['instructor_id'];
+
+// Initialize the lessons array
 $lessons = [];
-$sql = "SELECT * FROM lesson";
+
+// Prepare a query to fetch lessons for courses created by the instructor
+$sql = "
+    SELECT lesson.* 
+    FROM lesson
+    INNER JOIN course ON lesson.course_id = course.course_id
+    WHERE course.instructor_id = ?
+";
+
+// Use a prepared statement to prevent SQL injection
 $stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $instructor_id);
+
+// Execute the statement
 $stmt->execute();
+
+// Fetch the results securely
 $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $lessons[] = $row;
     }
 }
+
+// Close the statement
+$stmt->close();
 
 const TITLE = 'Lessons';
 const PAGE = 'lessons';

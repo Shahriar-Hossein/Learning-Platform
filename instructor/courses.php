@@ -10,14 +10,24 @@ include('../dbConnection.php');
 //    echo "<script> location.href='../index.php'; </script>";
 //}
 
+// Fetch all courses for this instructor.
 $courses = [];
-$sql = "SELECT * FROM course";
-$result = $conn->query($sql);
+$instructor_id = $_SESSION['instructor_id'];
+
+// Use a prepared statement to prevent SQL injection
+$stmt = $conn->prepare("SELECT * FROM course WHERE instructor_id = ?");
+$stmt->bind_param("i", $instructor_id);
+$stmt->execute();
+
+// Fetch results securely
+$result = $stmt->get_result();
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()){
         $courses[] = $row;
     }
 }
+// Close the statement
+$stmt->close();
 
 const TITLE = 'Courses';
 const PAGE = 'courses';

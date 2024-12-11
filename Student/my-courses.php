@@ -49,7 +49,7 @@ include('./include/sidebar.php');
 
 <div class="container mx-auto mt-5">
   <div class="bg-white shadow-lg rounded-lg p-6">
-    <h4 class="text-center text-2xl font-semibold mb-4">All Courses</h4>
+    <h4 class="text-center text-2xl font-semibold mb-4">My Courses</h4>
 
     <?php foreach ($ordered_courses as $course) : ?>
       <div class="bg-violet-100 mb-4 p-4 rounded-lg shadow-md">
