@@ -6,8 +6,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // SSLCommerz Configuration
-$store_id = "zante65e3a05559d46"; // Replace with your actual store ID
-$store_passwd = "zante65e3a05559d46@ssl"; // Replace with your actual store password
+$store_id = "cyber670e1cc54b674"; 
+// Replace with your actual store ID
+$store_passwd = "cyber670e1cc54b674@ssl"; 
+// Replace with your actual store password
 $success_url = "http://localhost/lms/success.php";
 $fail_url = "http://localhost/lms/index.php";
 $cancel_url = "http://localhost/lms/index.php";
@@ -50,7 +52,7 @@ $post_data = array(
 );
 
 // Make API request to SSLCommerz
-$direct_api_url = "https://sandbox.sslcommerz.com/gwprocess/v4/api.php"; // Use sandbox URL for testing
+$direct_api_url = "https://sandbox.sslcommerz.com/gwprocess/v3/api.php"; // Use sandbox URL for testing
 $handle = curl_init();
 curl_setopt($handle, CURLOPT_URL, $direct_api_url);
 curl_setopt($handle, CURLOPT_TIMEOUT, 30);
@@ -58,6 +60,8 @@ curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 30);
 curl_setopt($handle, CURLOPT_POST, 1);
 curl_setopt($handle, CURLOPT_POSTFIELDS, $post_data);
 curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
+
 $content = curl_exec($handle);
 
 $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);

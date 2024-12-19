@@ -1,64 +1,65 @@
-<?php 
-  include('./dbConnection.php');
-  // Header Include from mainInclude 
-  const DIRECTORY = '';
-  include('mainInclude/header.php'); 
-  include('mainInclude/navbar.php');
+<?php
+include('./dbConnection.php');
+
+const TITLE = "Maria's School";
+const PAGE = "Maria's School";
+const DIRECTORY = "";
+
+include(DIRECTORY . 'mainInclude/navbar.php');
 ?>
 
-<div class="container-fluid bg-dark"> <!-- Start Course Page Banner -->
-  <div class="row">
-    <img src="./image/coursebanner.jpg" alt="courses" style="height:300px; width:100%; object-fit:cover; box-shadow:10px;"/>
+<div class="bg-violet-300"> 
+  <!-- Start Course Page Banner -->
+  <div class="relative">
+    <img src="./image/coursebanner.jpg" alt="courses" class="w-full h-[300px] object-cover shadow-md"/>
   </div> 
-</div> <!-- End Course Page Banner -->
+  <!-- End Course Page Banner -->
+</div>
 
+<div class="container mx-auto my-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Login Section -->
+    <div class="p-6 bg-white shadow-lg rounded-lg">
+      <h5 class="text-2xl font-semibold text-violet-600 mb-6">If Already Registered, Login</h5>
+      <form id="stuLoginForm">
+        <div class="mb-4">
+          <label for="stuLogEmail" class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="stuLogEmail" name="stuLogEmail" placeholder="Email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500">
+        </div>
+        <div class="mb-6">
+          <label for="stuLogPass" class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="stuLogPass" name="stuLogPass" placeholder="Password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500">
+        </div>
+        <button type="button" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700" id="stuLoginBtn" onclick="checkStuLogin()">Login</button>
+        <small id="statusLogMsg" class="block text-red-500 mt-2"></small>
+      </form>
+    </div>
 
-<div class="container jumbotron mb-5">
-  <div class="row">
-  <div class="col-md-4">    
-    <h5 class="mb-3">If Already Registered !! Login</h5>
-    <form role="form" id="stuLoginForm">
-      <div class="form-group">
-        <i class="fas fa-envelope"></i><label for="stuLogEmail" class="pl-2 font-weight-bold">Email</label><small id="statusLogMsg1"></small><input type="email"
-            class="form-control" placeholder="Email" name="stuLogEmail" id="stuLogEmail">
+    <!-- Signup Section -->
+    <div class="p-6 bg-white shadow-lg rounded-lg">
+      <h5 class="text-2xl font-semibold text-violet-600 mb-6">New User, Sign Up</h5>
+      <form id="stuRegForm">
+        <div class="mb-4">
+          <label for="stuname" class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="stuname" name="stuname" placeholder="Name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500">
         </div>
-        <div class="form-group">
-        <i class="fas fa-key"></i><label for="stuLogPass" class="pl-2 font-weight-bold">Password</label><input type="password" class="form-control" placeholder="Password" name="stuLogPass" id="stuLogPass">
-      </div>
-      <button type="button" class="btn btn-primary" id="stuLoginBtn" onclick="checkStuLogin()">Login</button>
-    </form><br/>
-    <small id="statusLogMsg"></small>
-  </div>
-  <div class="col-md-6 offset-md-1">
-  <h5 class="mb-3">New User !! Sign Up</h5>
-    <form role="form" id="stuRegForm">
-        <div class="form-group">
-          <i class="fas fa-user"></i><label for="stuname" class="pl-2 font-weight-bold">Name</label><small id="statusMsg1"></small><input type="text"
-            class="form-control" placeholder="Name" name="stuname" id="stuname">
+        <div class="mb-4">
+          <label for="stuemail" class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="stuemail" name="stuemail" placeholder="Email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500">
+          <small class="block text-gray-500 mt-1">We'll never share your email with anyone else.</small>
         </div>
-        <div class="form-group">
-        <i class="fas fa-envelope"></i><label for="stuemail" class="pl-2 font-weight-bold">Email</label><small id="statusMsg2"></small><input type="email"
-            class="form-control" placeholder="Email" name="stuemail" id="stuemail">
-          <small class="form-text">We'll never share your email with anyone else.</small>
+        <div class="mb-6">
+          <label for="stupass" class="block text-gray-700 font-medium mb-2">New Password</label>
+          <input type="password" id="stupass" name="stupass" placeholder="Password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500">
         </div>
-        <div class="form-group">
-          <i class="fas fa-key"></i><label for="stupass" class="pl-2 font-weight-bold">New
-            Password</label><small id="statusMsg3"></small><input type="password" class="form-control" placeholder="Password" name="stupass" id="stupass">
-        </div>
-        <button type="button" class="btn btn-primary" id="signup" onclick="addStu()">Sign Up</button>
-    </form> <br/>
-    <small id="successMsg"></small>
-  </div>
+        <button type="button" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700" id="signup" onclick="addStu()">Sign Up</button>
+        <small id="successMsg" class="block text-green-500 mt-2"></small>
+      </form>
+    </div>
   </div>
 </div>
-<hr/>
 
 <?php 
-// Contact Us
-include('contact.php'); 
-?> 
-
-<?php 
-  // Footer Include from mainInclude 
-  include('mainInclude/footer.php'); 
-?> 
+// Footer Section
+include(DIRECTORY . 'mainInclude/footer.php'); 
+?>

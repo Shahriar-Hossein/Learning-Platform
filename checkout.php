@@ -3,11 +3,32 @@
 include('./dbConnection.php');
 session_start();
 
-if (!isset($_SESSION['stuLogEmail'])) {
-  echo "<script> location.href='loginorsignup.php'; </script>";
+if (!isset($_SESSION['student_id'])) {
+  echo "<script> location.href='auth/login.php'; </script>";
 } else {
+  // Fetch the student email using the student_id
+  $student_id = $_SESSION['student_id'];
+  
+  // Query to fetch student email from the database
+  $email_query = "SELECT email FROM student WHERE id = ?";
+  $stmt = $conn->prepare($email_query);
+  $stmt->bind_param("i", $student_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $stuEmail = $row['email'];
+  } else {
+    echo "<script>alert('Student not found! Please login again.'); location.href='auth/login.php'; </script>";
+    exit();
+  }
+
+  $stmt->close();
+
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $stuEmail = $_SESSION['stuLogEmail'];
+
+    // $stuEmail = $_SESSION['stuLogEmail'];
     $course_id = $_POST['course_id'];
     $order_id = "ORDS" . rand(10000, 99999999);
     $amount = isset($_POST['TXN_AMOUNT']) ? intval($_POST['TXN_AMOUNT']) : 0;
