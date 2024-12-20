@@ -61,15 +61,22 @@ if (isset($data['course_id'], $data['rating'])) {
     $stmt->close();
     // Update the average rating in the course table
     $update_course_sql = "
-        UPDATE course 
-        SET rating = (
-            SELECT AVG(rating) 
+    UPDATE course 
+    SET 
+        rating = (
+            SELECT COALESCE(AVG(rating), 0) 
+            FROM course_rating 
+            WHERE course_id = ?
+        ),
+        total_reviews = (
+            SELECT COUNT(rating) 
             FROM course_rating 
             WHERE course_id = ?
         )
-        WHERE id = ?";
+    WHERE course_id = ?";
+
     $update_course_stmt = $conn->prepare($update_course_sql);
-    $update_course_stmt->bind_param("ii", $course_id, $course_id);
+    $update_course_stmt->bind_param("iii", $course_id, $course_id, $course_id);
     if (!$update_course_stmt->execute()) {
         echo json_encode(['status' => 'error', 'message' => 'Failed to update the course rating']);
     }
