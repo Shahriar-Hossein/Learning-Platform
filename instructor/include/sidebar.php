@@ -57,9 +57,10 @@ include('../mainInclude/header.php');
                 </svg>
                 Quizzes
             </a>
+            <!-- Home -->
             <a href="../index.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Home' ? 'bg-violet-300' : '' ?>">
                 <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8m-8 4h6" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M3 12v7h18v-7M9 21v-5h6v5" />
                 </svg>
                 Home
             </a>

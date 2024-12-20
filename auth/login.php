@@ -36,6 +36,8 @@ function loginUser($email, $password, $role, $conn) {
           session_start();
           $variable_name = $role . '_id';
           $_SESSION[ $variable_name] = $user['id'];
+          $variable_email = $role . '_email';
+          $_SESSION[ $variable_email] = $email;
           $_SESSION['role'] = $role;
           $_SESSION['is_login'] = true;
 

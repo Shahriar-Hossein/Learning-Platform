@@ -134,8 +134,8 @@ include('./include/sidebar.php');
                             </div>
                         </div>
 
-                        <a href="watchcourse.php?course_id=<?= $course_id; ?>" class="inline-block mt-4 bg-violet-500 text-white py-2 px-6 rounded-lg">
-                            Watch Course
+                        <a href="view-course.php?course_id=<?= $course_id; ?>" class="inline-block mt-4 bg-violet-500 text-white py-2 px-6 rounded-lg">
+                            View Course
                         </a>
                     </div>
                 </div>
