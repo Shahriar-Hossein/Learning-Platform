@@ -67,8 +67,8 @@ if (isset($_POST['lessonSubmitButton'])) {
   }
 }
 
-const TITLE = 'Edit Course';
-const PAGE = 'courses';
+const TITLE = 'Lessons';
+const PAGE = 'add lesson';
 
 include('include/sidebar.php');
 ?>

@@ -83,7 +83,7 @@ include('include/sidebar.php');
                     <td class="py-4 px-4 text-sm relative">
                         <button onclick="toggleDropdown(event, 'dropdown<?= $index + 1 ?>')" class="text-violet-600 px-4 py-2 rounded border transition duration-150 ease-in-out">Action</button>
                         <div id="dropdown<?= $index + 1 ?>" class="hidden dropdown-content absolute bg-white z-10 shadow-md rounded mt-2 w-24">
-                            <a href="#" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">View</a>
+                            <a href="<?= 'view-course.php?course_id='. $course['course_id'] ?>" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">View</a>
                             <a href="<?= 'edit-course.php?id='. $course['course_id'] ?>" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">Edit</a>
                             <a href="#" class="block px-4 py-2 text-violet-800 hover:bg-violet-200">Delete</a>
                         </div>
