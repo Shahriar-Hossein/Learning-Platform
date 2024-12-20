@@ -1,5 +1,5 @@
 <!-- Start Contact Us -->
-<div class="container mx-auto mt-10" id="Contact"> <!-- Start Contact Us Container -->
+<div class="container mx-auto pt-20 mt-10" id="Contact"> <!-- Start Contact Us Container -->
   <h2 class="text-center text-4xl font-extrabold text-violet-700 mb-8">Contact Us</h2> <!-- Contact Us Heading -->
   <div class="flex flex-wrap -mx-4"> <!-- Start Contact Us Row -->
     <div class="w-full md:w-2/3 px-4 mb-8 md:mb-0"> <!-- Start Contact Us 1st Column -->

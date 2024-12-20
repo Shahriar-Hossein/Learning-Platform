@@ -1,49 +1,120 @@
 <?php
 session_start();
+include(DIRECTORY . "mainInclude/header.php");
+
+// Determine the dashboard link based on user role and fetch user image
+$dashboard_link = '';
+$user_image = null;
+
+if (isset($_SESSION['student_id'])) {
+    $dashboard_link = "Student/dashboard.php";
+    $user_id = $_SESSION['student_id'];
+    $user_image_query = "SELECT image FROM student WHERE id = ?";
+} elseif (isset($_SESSION['instructor_id'])) {
+    $dashboard_link = "Instructor/dashboard.php";
+    $user_id = $_SESSION['instructor_id'];
+    $user_image_query = "SELECT image FROM instructors WHERE id = ?";
+} elseif (isset($_SESSION['admin_id'])) {
+    $dashboard_link = "Admin/dashboard.php";
+    $user_id = $_SESSION['admin_id'];
+    $user_image_query = "SELECT image FROM admin WHERE id = ?";
+}
+
+// Fetch user image if logged in
+if (isset($user_id)) {
+    $stmt = $conn->prepare($user_image_query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $user_data = $result->fetch_assoc();
+        $user_image = $user_data['image'] ?: null;
+    }
+    $stmt->close();
+}
 
 $logged_in = isset($_SESSION['is_login']);
-
-
-include(DIRECTORY . "mainInclude/header.php");
 ?>
 <!-- Start Navigation -->
-<nav class="bg-violet-800 fixed top-0 w-full z-20">
-    <div class="container mx-auto flex flex-wrap items-center justify-between p-4">
-        <!-- Company name -->
-        <a href="index.php" class="text-white flex flex-col">
-            <span class="text-xl font-bold">Maria's School</span>
-            <span class="text-sm">Learn and Grow</span>
+<nav class="bg-violet-800 fixed top-0 w-full z-20 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center py-2 px-4">
+        <!-- Logo -->
+        <a href="<?= htmlspecialchars(DIRECTORY . 'index.php') ?>" class="text-white flex items-center">
+            <span class="text-xl font-extrabold">Maria's School</span>
+            <span class="text-xs font-light tracking-wide ml-2">Learn and Grow</span>
         </a>
 
-        <!-- Toggle button for mobile view -->
-        <button class="text-white inline-flex items-center justify-center p-2 rounded-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white lg:hidden" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
+        <!-- Navigation Links -->
+        <div class="flex items-center space-x-4">
+            <ul class="flex space-x-4">
+                <li>
+                    <a href="<?= htmlspecialchars(DIRECTORY . 'index.php') ?>" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= htmlspecialchars(DIRECTORY . 'courses.php') ?>" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                        <i class="fas fa-book"></i> Courses
+                    </a>
+                </li>
+                <li>
+                    <a href="#Feedback" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                        <i class="fas fa-comment-dots"></i> Feedback
+                    </a>
+                </li>
+                <li>
+                    <a href="#Contact" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                        <i class="fas fa-phone"></i> Contact
+                    </a>
+                </li>
+            </ul>
 
-        <!-- Navbar links -->
-        <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto lg:flex-row-reverse" id="navbarNav">
-            <ul class="flex flex-col lg:flex-row lg:space-x-4 lg:mr-4">
-                <?php if ($logged_in): ?>
-                    <li class="nav-item"><a href="student/studentProfile.php" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700">My Profile</a></li>
-                    <li class="nav-item"><a href="logout.php" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700">Logout</a></li>
-                <?php else: ?>
-                    <li class="nav-item"><a href="<?= DIRECTORY . 'auth/login.php' ?>" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700" >Login</a></li>
-                    <li class="nav-item"><a href="<?= DIRECTORY . 'auth/registration.php' ?>" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700" >Signup</a></li>
-                <?php endif; ?>
-            </ul>
-            <ul class="flex flex-col lg:flex-row lg:space-x-4 lg:mr-4">
-                <li class="nav-item"><a href="<?= DIRECTORY . 'index.php' ?>" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700">Home</a></li>
-                <li class="nav-item"><a href="<?= DIRECTORY . 'courses.php' ?>" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700">Courses</a></li>
-                <li class="nav-item"><a href="#Feedback" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700">Feedback</a></li>
-                <li class="nav-item"><a href="#Contact" class="block px-3 py-2 rounded-md text-white hover:bg-violet-700">Contact</a></li>
-            </ul>
+            <?php if ($logged_in): ?>
+                <!-- Dropdown for Logged-in User -->
+                <div class="relative">
+                    <button id="userMenu" class="text-white flex items-center space-x-2 px-3 py-1 rounded-md hover:bg-violet-700 transition">
+                        <?php if ($user_image): ?>
+                            <img src="<?= htmlspecialchars($user_image) ?>" alt="User Image" class="w-6 h-6 rounded-full">
+                        <?php else: ?>
+                            <i class="fas fa-user-circle text-xl"></i>
+                        <?php endif; ?>
+                        <span>My Account</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                        <a href="<?= htmlspecialchars($dashboard_link) ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                        <a href="<?= htmlspecialchars(DIRECTORY . 'logout.php') ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <!-- Login and Signup -->
+                <div class="flex space-x-3">
+                    <a href="<?= htmlspecialchars(DIRECTORY . 'auth/login.php') ?>" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="<?= htmlspecialchars(DIRECTORY . 'auth/registration.php') ?>" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                        <i class="fas fa-user-plus"></i> Signup
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
+
 <!-- End Navigation -->
 
 <!-- Main Content -->
-<div class="mt-20 ">
+<div class="mt-auto">
     <!-- Your main content goes here -->
+
+<!-- Script to toggle dropdown -->
+<script>
+    document.getElementById('userMenu').addEventListener('click', () => {
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.classList.toggle('hidden');
+    });
+</script>

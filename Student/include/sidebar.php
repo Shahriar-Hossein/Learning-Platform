@@ -29,6 +29,7 @@ include( DIRECTORY . 'mainInclude/header.php');
             <a href="dashboard.php" class="<?= TITLE == 'Dashboard' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Dashboard</a>
             <a href="my-courses.php" class="<?= TITLE == 'Courses' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">My Courses</a>
             <a href="my-profile.php" class="<?= TITLE == 'Lessons' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">My Profile</a>
+            <a href="../index.php" class="<?= TITLE == 'Home' ? 'bg-violet-300' : '' ?> block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Home</a>
             <a href="../logout.php" class="block py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300">Logout</a>
         </nav>
     </div>

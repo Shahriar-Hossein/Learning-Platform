@@ -10,7 +10,7 @@ if ($testimonial_sql_result->num_rows > 0) {
 ?>
 
 <!-- Start Students Testimonial -->
-<div class="bg-violet-700 overflow-hidden py-16 mt-10" id="Feedback">
+<div class="bg-violet-700 overflow-hidden pt-20 mt-10" id="Feedback">
   <h1 class="text-center text-white text-4xl font-extrabold mb-8">Student's Feedback</h1>
   <div class="container mx-auto">
     <div class="swiper-container" id="testimonial-slider">

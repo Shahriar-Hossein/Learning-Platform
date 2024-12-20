@@ -37,6 +37,7 @@ function loginUser($email, $password, $role, $conn) {
           $variable_name = $role . '_id';
           $_SESSION[ $variable_name] = $user['id'];
           $_SESSION['role'] = $role;
+          $_SESSION['is_login'] = true;
 
           // Redirect to dashboard or appropriate page
           header("Location: " . $location . "dashboard.php"); 
