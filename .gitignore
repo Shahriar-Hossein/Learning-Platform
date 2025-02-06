@@ -1,0 +1,21 @@
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.tmp
+
+# Folders with images and videos
+/video
+/lessonvid
+
+# vendor folder
+/vendor/*
+!/vendor/stripe/
+
+# IDE specific files
+/.idea/
+/.vscode/
+
+# Environment variable files
+.env
