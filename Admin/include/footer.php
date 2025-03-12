@@ -1,17 +1,15 @@
-    
-    <!-- Jquery and Boostrap JavaScript -->
-    <script type="text/javascript" src="../js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/popper.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+</div>
+  </div>
 
-    <!-- Font Awesome JS -->
-    <script type="text/javascript" src="../js/all.min.js"></script>
+  <!-- Start Footer -->
+  <footer class="bg-violet-800 text-white py-4 flex flex-col items-center mt-10">
+  <small class="text-center text-gray-200">
+    &copy; 2024 E-Learning | Designed by Maria's School
+  </small>
+  <div class="mt-2">
+    <!-- Optional: Add social media links or additional content here -->
+  </div>
+</footer>
 
-    <!-- Admin Ajax Call JavaScript -->
-    <script type="text/javascript" src="../js/adminajaxrequest.js"></script>
-
-    <!-- Custom JavaScript -->
-    <script type="text/javascript" src="../js/custom.js"></script>
-  </body>
-
+</body>
 </html>

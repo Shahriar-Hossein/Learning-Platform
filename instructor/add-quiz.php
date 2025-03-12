@@ -30,20 +30,33 @@ if (isset($_POST['quizSubmitButton'])) {
   } else {
     // Assigning user values to variables
     $course_id = $_POST['course_id'];
+    $time = $_POST['time'];
     $quiz_description = $_POST['quiz_description'];
+   // Generating a unique file name
     $quiz_file = $_FILES['quiz_file']['name'];
     $quiz_file_tmp = $_FILES['quiz_file']['tmp_name'];
-    $file_folder = '../quizfiles/' . $quiz_file;
-    move_uploaded_file($quiz_file_tmp, $file_folder);
+
+    if (!empty($quiz_file)) {
+        $file_extension = pathinfo($quiz_file, PATHINFO_EXTENSION); // Get file extension
+        $unique_filename = pathinfo($quiz_file, PATHINFO_FILENAME) . '_' . uniqid() . '.' . $file_extension; // Append unique ID
+        $file_folder = '../quizfiles/' . $unique_filename;
+
+        move_uploaded_file($quiz_file_tmp, $file_folder);
+    }
+    
+    $created_at = date('Y-m-d H:i:s');
+    $updated_at = $created_at;
 
     // Insert quiz into the database
-    $insert_stmt = $conn->prepare("INSERT INTO quiz (course_id, description, file_link) VALUES (?, ?, ?)");
-    $insert_stmt->bind_param("iss", $course_id, $quiz_description, $file_folder);
+    $insert_stmt = $conn->prepare("INSERT INTO quiz (course_id, time, description, file_link, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+    $insert_stmt->bind_param("iissss", $course_id, $time, $quiz_description, $file_folder, $created_at, $updated_at);
 
     if ($insert_stmt->execute()) {
       $msg = '<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-2 my-2" role="alert">Quiz Added Successfully</div>';
+      $success_message = "Quiz added successfully!";
     } else {
       $msg = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 my-2" role="alert">Unable to Add Quiz</div>';
+      $error_message = "Failed to add quiz!";
     }
 
     $insert_stmt->close();
@@ -79,6 +92,13 @@ include('include/sidebar.php');
     </div>
 
     <div class="flex flex-col">
+      <label for="time" class="block text-violet-600 font-medium mb-2">Quiz Time <small class="text-black">(Enter minute)</small></label>
+      <input type="number" id="time" required name="time" step="1" min="1" max="90" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+        class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+      >
+    </div>
+
+    <div class="flex flex-col">
       <label for="quiz_description" class="block text-violet-600 font-medium mb-2">Quiz Description</label>
       <textarea id="quiz_description" required name="quiz_description" rows="4" class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"></textarea>
     </div>
@@ -95,5 +115,22 @@ include('include/sidebar.php');
 
   </form>
 </div>
+
+<script>
+  function isInputNumber(evt) {
+        var ch = String.fromCharCode(evt.which);
+        if (!(/[0-9]/.test(ch))) {
+            evt.preventDefault();
+        }
+    }
+  const notyf = new Notyf({ position: { x: 'right', y: 'top' }, duration: 4000 });
+
+  <?php if (isset($success_message)): ?>
+      notyf.success('<?= htmlspecialchars($success_message) ?>');
+  <?php endif; ?>
+  <?php if (isset($error_message)): ?>
+      notyf.error('<?= htmlspecialchars($error_message) ?>');
+  <?php endif; ?>
+</script>
 
 <?php include('../mainInclude/footer.php'); ?>

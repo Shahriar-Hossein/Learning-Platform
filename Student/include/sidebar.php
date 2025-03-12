@@ -42,8 +42,16 @@ include( DIRECTORY . 'mainInclude/header.php');
                 My Courses
             </a>
 
+            <!-- Feedback -->
+            <a href="submit-feedback.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Feedback' ? 'bg-violet-300' : '' ?>">
+                <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12c0 4.418-3.582 8-8 8-1.061 0-2.078-.206-3-.586L3 21l1.586-5.414C3.206 14.078 3 13.061 3 12c0-4.418 3.582-8 8-8s8 3.582 8 8z"/>
+                </svg>
+                Feedback
+            </a>
+
             <!-- My Profile -->
-            <a href="my-profile.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Lessons' ? 'bg-violet-300' : '' ?>">
+            <a href="my-profile.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Student Profile' ? 'bg-violet-300' : '' ?>">
                 <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A11.968 11.968 0 0112 15.5c2.15 0 4.16.56 5.879 1.553M15.5 11.12c-1.49.93-3.5.93-5 0M9.121 7.5a4 4 0 115.758 0" />
                 </svg>

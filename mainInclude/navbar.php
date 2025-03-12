@@ -1,5 +1,4 @@
 <?php
-session_start();
 include(DIRECTORY . "mainInclude/header.php");
 
 // Determine the dashboard link based on user role and fetch user image
@@ -9,19 +8,18 @@ $user_image = null;
 if (isset($_SESSION['student_id'])) {
     $dashboard_link = "Student/dashboard.php";
     $user_id = $_SESSION['student_id'];
-    $user_image_query = "SELECT image FROM student WHERE id = ?";
+    $user_image_query = "SELECT * FROM student WHERE id = ?";
 } elseif (isset($_SESSION['instructor_id'])) {
     $dashboard_link = "Instructor/dashboard.php";
     $user_id = $_SESSION['instructor_id'];
-    $user_image_query = "SELECT image FROM instructors WHERE id = ?";
+    $user_image_query = "SELECT * FROM instructors WHERE id = ?";
 } elseif (isset($_SESSION['admin_id'])) {
     $dashboard_link = "Admin/dashboard.php";
     $user_id = $_SESSION['admin_id'];
-    $user_image_query = "SELECT image FROM admin WHERE id = ?";
 }
 
 // Fetch user image if logged in
-if (isset($user_id)) {
+if (isset($user_id) && !empty($user_image_query)) {
     $stmt = $conn->prepare($user_image_query);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -29,8 +27,16 @@ if (isset($user_id)) {
     if ($result->num_rows > 0) {
         $user_data = $result->fetch_assoc();
         $user_image = $user_data['image'] ?: null;
+        $user_name = $user_data['name'] ?? "My Account";
     }
+    
     $stmt->close();
+}
+
+// Default image for admin (if no image field in the admin table)
+if (isset($_SESSION['admin_id']) && !$user_image) {
+    $user_name = "Admin";
+    $user_image = 'admin.jpg'; // Set a default image for the admin
 }
 
 $logged_in = isset($_SESSION['is_login']);
@@ -57,16 +63,18 @@ $logged_in = isset($_SESSION['is_login']);
                         <i class="fas fa-book"></i> Courses
                     </a>
                 </li>
-                <li>
-                    <a href="#Feedback" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
-                        <i class="fas fa-comment-dots"></i> Feedback
-                    </a>
-                </li>
-                <li>
-                    <a href="#Contact" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
-                        <i class="fas fa-phone"></i> Contact
-                    </a>
-                </li>
+                <?php if( PAGE == "index") : ?>
+                    <li>
+                        <a href="#Contact" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                            <i class="fas fa-phone"></i> Contact
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#Feedback" class="text-white hover:bg-violet-700 px-3 py-1 rounded-md transition">
+                            <i class="fas fa-comment-dots"></i> Feedback
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
 
             <?php if ($logged_in): ?>
@@ -74,11 +82,11 @@ $logged_in = isset($_SESSION['is_login']);
                 <div class="relative">
                     <button id="userMenu" class="text-white flex items-center space-x-2 px-3 py-1 rounded-md hover:bg-violet-700 transition">
                         <?php if ($user_image): ?>
-                            <img src="<?= htmlspecialchars($user_image) ?>" alt="User Image" class="w-6 h-6 rounded-full">
+                            <img src="<?= 'image/' . htmlspecialchars($user_image) ?>" alt="User Image" class="w-6 h-6 rounded-full">
                         <?php else: ?>
                             <i class="fas fa-user-circle text-xl"></i>
                         <?php endif; ?>
-                        <span>My Account</span>
+                        <span><?= $user_name ?></span>
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg">

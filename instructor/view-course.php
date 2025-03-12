@@ -37,6 +37,16 @@ if (isset($_GET['course_id'])) {
         $quizzes[] = $quiz;
     }
 
+    // Fetch students who purchased this course
+    $students = [];
+    $stmt = $conn->prepare("SELECT s.id, s.name, s.email, co.order_date FROM courseorder co JOIN student s ON co.stu_email = s.email WHERE co.course_id = ?");
+    $stmt->bind_param("i", $course_id);
+    $stmt->execute();
+    $student_result = $stmt->get_result();
+    while ($student = $student_result->fetch_assoc()) {
+        $students[] = $student;
+    }
+
     $stmt->close();
 } else {
     echo "Invalid request.";
@@ -56,8 +66,8 @@ include('include/sidebar.php');
 
 <!-- Course Description -->
 <div class="my-4 py-8 bg-violet-50 text-white shadow-lg rounded-lg">
-    <p class="text-center text-lg text-gray-950 text-bold mb-2">Course Description:</p>
-    <p class="text-center text-lg text-gray-600 text-bold mb-2"><?= htmlspecialchars($course_description) ?></p>
+    <p class="text-center text-lg text-gray-950 font-bold mb-2">Course Description:</p>
+    <p class="text-center text-lg text-gray-600 font-bold mb-2"><?= htmlspecialchars($course_description) ?></p>
 </div>
 
 <!-- Lessons List -->
@@ -95,7 +105,7 @@ include('include/sidebar.php');
             <thead>
                 <tr>
                     <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">SL NO.</th>
-                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Quiz Title</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Description</th>
                     <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Action</th>
                 </tr>
             </thead>
@@ -103,9 +113,40 @@ include('include/sidebar.php');
                 <?php foreach ($quizzes as $index => $quiz): ?>
                 <tr class="border-b border-violet-200 hover:bg-violet-50 transition duration-150 ease-in-out">
                     <td class="py-4 px-4 text-sm"><?= $index + 1 ?></td>
-                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($quiz['title']?? "quiz title") ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars(substr($quiz['description'], 0, 80) . '...') ?></td>
                     <td class="py-4 px-4 text-sm">
                         <a href="view-quiz.php?quiz_id=<?= $quiz['id'] ?>&course_id=<?= $course_id ?>" class="text-violet-600 hover:underline">View Quiz</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Students List -->
+<div class="my-4">
+    <h4 class="text-2xl font-semibold text-violet-600 mb-4">Enrolled Students</h4>
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+        <table class="min-w-full table-auto">
+            <thead>
+                <tr>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Student ID</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Name</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Email</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Enrolled Date</th>
+                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($students as $student): ?>
+                <tr class="border-b border-violet-200 hover:bg-violet-50 transition duration-150 ease-in-out">
+                    <td class="py-4 px-4 text-sm"><?= $student['id'] ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($student['name']) ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($student['email']) ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($student['order_date']) ?></td>
+                    <td class="py-4 px-4 text-sm">
+                        <a href="view-student.php?student_id=<?= $student['id'] ?>" class="text-violet-600 hover:underline">View Student</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

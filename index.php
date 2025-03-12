@@ -1,5 +1,10 @@
 <?php
 include('./dbConnection.php');
+session_start();
+
+const TITLE = "Maria's School";
+const PAGE = "index";
+const DIRECTORY = "";
 
 // Fetch courses sorted by rating
 $courses = [];
@@ -11,10 +16,6 @@ if ($course_sql_result->num_rows > 0) {
     }
 }
 
-const TITLE = "Maria's School";
-const PAGE = "Maria's School";
-const DIRECTORY = "";
-
 include(DIRECTORY . 'mainInclude/navbar.php');
 ?>
 
@@ -24,9 +25,9 @@ include(DIRECTORY . 'mainInclude/navbar.php');
     <h1 class="text-5xl font-bold">Maria's School</h1>
     <small class="text-xl mt-2">Learn and Grow</small><br />
     <?php if (!isset($_SESSION['is_login'])): ?>
-      <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded mt-3" href="#" data-toggle="modal" data-target="#stuRegModalCenter">Get Started</a>
+      <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded mt-3" href="auth/registration.php" >Get Started</a>
     <?php else: ?>
-      <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded mt-3" href="Student/studentProfile.php">My Profile</a>
+      <a class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded mt-3" href="<?= htmlspecialchars($dashboard_link) ?>">My Profile</a>
     <?php endif; ?>
   </div>
 </div>
@@ -85,8 +86,8 @@ include(DIRECTORY . 'mainInclude/navbar.php');
           </div>
         </div>
         <div class="p-4 bg-gray-100">
-          <p class="text-sm">Price: <small class="line-through">&#2547; <?= $course['course_original_price'] ?></small> <span class="text-lg font-bold">&#2547; <?= $course['course_price'] ?></span></p>
-          <span class="inline-block bg-violet-600 hover:bg-violet-700 text-white py-1 px-3 rounded mt-2">Enroll</span>
+          <p class="text-sm">Price: <span class="text-lg font-bold text-violet-600">&#2547; <?= $course['course_price'] ?></span></p>
+          <span class="inline-block bg-violet-600 hover:bg-violet-700 text-white py-1 px-3 rounded mt-2">View</span>
         </div>
       </a>
     </div>

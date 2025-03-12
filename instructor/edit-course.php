@@ -5,13 +5,13 @@ if (!isset($_SESSION)) {
 include('../dbConnection.php');
 
 // Check if the course ID is provided
-if (!isset($_GET['id']) || empty($_GET['id'])) {
+if (!isset($_GET['course_id']) || empty($_GET['course_id'])) {
     echo "<script> location.href='courses.php'; </script>";
     exit();
 }
 
 // Get course ID from query parameters
-$courseId = $_GET['id'];
+$courseId = $_GET['course_id'];
 
 // Fetch course details from the database
 $sql = "SELECT * FROM course WHERE course_id = ?";
@@ -29,7 +29,7 @@ $course = $result->fetch_assoc();
 
 if (isset($_REQUEST['courseSubmitBtn'])) {
     // Checking for Empty Fields
-    if (($_REQUEST['course_name'] == "") || ($_REQUEST['course_desc'] == "") || ($_REQUEST['course_author'] == "") || ($_REQUEST['course_duration'] == "") || ($_REQUEST['course_price'] == "") || ($_REQUEST['course_original_price'] == "")) {
+    if (($_REQUEST['course_name'] == "") || ($_REQUEST['course_desc'] == "") || ($_REQUEST['course_author'] == "") || ($_REQUEST['course_duration'] == "") || ($_REQUEST['course_price'] == "")) {
         // msg displayed if required field missing
         $msg = '<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2 my-2" role="alert">Fill All Fields</div>';
     } else {
@@ -39,26 +39,28 @@ if (isset($_REQUEST['courseSubmitBtn'])) {
         $course_author = $_REQUEST['course_author'];
         $course_duration = $_REQUEST['course_duration'];
         $course_price = $_REQUEST['course_price'];
-        $course_original_price = $_REQUEST['course_original_price'];
         $course_image = $_FILES['course_img']['name'];
         $course_image_temp = $_FILES['course_img']['tmp_name'];
 
         if ($course_image) {
             $img_folder = '../image/courseimg/'. $course_image;
             move_uploaded_file($course_image_temp, $img_folder);
-            $sql = "UPDATE course SET course_name=?, course_desc=?, course_author=?, course_img=?, course_duration=?, course_price=?, course_original_price=? WHERE course_id=?";
+            $sql = "UPDATE course SET course_name=?, course_desc=?, course_author=?, course_img=?, course_duration=?, course_price=? WHERE course_id=?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssssi", $course_name, $course_desc, $course_author, $img_folder, $course_duration, $course_price, $course_original_price, $courseId);
+            $stmt->bind_param("ssssssi", $course_name, $course_desc, $course_author, $img_folder, $course_duration, $course_price, $courseId);
         } else {
-            $sql = "UPDATE course SET course_name=?, course_desc=?, course_author=?, course_duration=?, course_price=?, course_original_price=? WHERE course_id=?";
+            $sql = "UPDATE course SET course_name=?, course_desc=?, course_author=?, course_duration=?, course_price=? WHERE course_id=?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssssi", $course_name, $course_desc, $course_author, $course_duration, $course_price, $course_original_price, $courseId);
+            $stmt->bind_param("sssssi", $course_name, $course_desc, $course_author, $course_duration, $course_price, $courseId);
         }
 
         if ($stmt->execute()) {
-            $msg = '<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-2 my-2" role="alert">Course Updated Successfully</div>';
+            // $msg = '<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-2 my-2" role="alert">Course Updated Successfully</div>';
+            echo "<script> location.href='courses.php'; </script>";
+            $success_message = "Course updated successfully!";
         } else {
             $msg = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 my-2" role="alert">Unable to Update Course</div>';
+            $error_message = "Failed to update course!";
         }
     }
 }
@@ -96,29 +98,22 @@ include('include/sidebar.php');
         </div>
         
         <div class="flex flex-col">
-            
             <label for="course_author" class="block text-violet-600 font-medium mb-2">Author</label>
-            <input type="text" id="course_author" name="course_author" value="<?= htmlspecialchars($course['course_author']) ?>" 
-                class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" 
+            <input type="text" id="course_author" name="course_author" value="<?= htmlspecialchars($course['course_author']) ?>" readonly
+                class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none" 
             >
 
         </div>
         
         <div class="flex flex-col">
-            <label for="course_duration" class="block text-violet-600 font-medium mb-2">Course Duration</label>
-            <input type="text" id="course_duration" name="course_duration" value="<?= htmlspecialchars($course['course_duration']) ?>"
+            <label for="course_duration" class="block text-violet-600 font-medium mb-2">Course Duration <small> (in days 1-30) </small></label>
+            <input type="text" id="course_duration" name="course_duration" value="<?= htmlspecialchars($course['course_duration']) ?>" onkeypress="isInputNumber(event)"
                 class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" 
             >
         </div>
         
         <div class="flex flex-col">
-            <label for="course_original_price" class="block text-violet-600 font-medium mb-2">Course Original Price</label>
-            <input type="text" id="course_original_price" name="course_original_price" value="<?= htmlspecialchars($course['course_original_price']) ?>" onkeypress="isInputNumber(event)"
-                class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" >
-        </div>
-        
-        <div class="flex flex-col">
-            <label for="course_price" class="block text-violet-600 font-medium mb-2">Course Selling Price</label>
+            <label for="course_price" class="block text-violet-600 font-medium mb-2">Course Selling Price <small> (tk) </small></label>
             <input type="text" id="course_price" name="course_price" value="<?= htmlspecialchars($course['course_price']) ?>" onkeypress="isInputNumber(event)"
                 class="form-control w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500" >
         </div>
@@ -151,6 +146,14 @@ include('include/sidebar.php');
             evt.preventDefault();
         }
     }
+    const notyf = new Notyf({ position: { x: 'right', y: 'top' }, duration: 4000 });
+
+    <?php if (isset($success_message)): ?>
+        notyf.success('<?= htmlspecialchars($success_message) ?>');
+    <?php endif; ?>
+    <?php if (isset($error_message)): ?>
+        notyf.error('<?= htmlspecialchars($error_message) ?>');
+    <?php endif; ?>
 </script>
 
 <?php

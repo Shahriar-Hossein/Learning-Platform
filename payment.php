@@ -1,30 +1,46 @@
 <?php
 // Include necessary files
 include 'dbConnection.php';
-require __DIR__ . "/vendor/autoload.php";
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// SSLCommerz Configuration
-$store_id = "cyber670e1cc54b674"; 
-// Replace with your actual store ID
-$store_passwd = "cyber670e1cc54b674@ssl"; 
-// Replace with your actual store password
-$success_url = "http://localhost/lms/success.php";
-$fail_url = "http://localhost/lms/index.php";
-$cancel_url = "http://localhost/lms/index.php";
-$currency = "BDT";
+session_start();
 
 // Retrieve form data
 $order_id = $_POST['ORDER_ID'];
 $customer_email = $_POST['CUST_ID'];
 $total_amount = $_POST['TXN_AMOUNT'];
 
+// SSLCommerz Configuration
+$store_id = "cyber670e1cc54b674"; 
+// Replace with your actual store ID
+$store_passwd = "cyber670e1cc54b674@ssl"; 
+// Replace with your actual store password
+$success_url = "http://localhost/lms/success.php?" . http_build_query(
+    [
+        'course_order_id' => $_POST['COURSE_ORDER_ID'], 
+        'user_id'=>$_POST['STUDENT_ID'], 
+        'user_email'=> $customer_email
+    ]);
+$fail_url = "http://localhost/lms/fail.php?" . http_build_query(
+    [
+        'course_id' => $_POST['COURSE_ID'], 
+        'user_id'=>$_POST['STUDENT_ID'], 
+        'user_email'=> $customer_email,
+        'payment_status' => 'failed'
+    ]);
+$cancel_url = "http://localhost/lms/fail.php?" . http_build_query(
+    [
+        'course_id' => $_POST['COURSE_ID'], 
+        'user_id'=>$_POST['STUDENT_ID'], 
+        'user_email'=> $customer_email,
+        'payment_status' => 'failed'
+    ]);
+
+$currency = "BDT";
+
 // Transaction ID
 $transaction_id = uniqid(); // Unique transaction ID
 
 // Product Information
-$product_name = "E-Learning Course"; // Example product name
+$product_name = "Online Course"; // Example product name
 $shipping_method = "NO"; // Example shipping method
 
 // Create Payment Request

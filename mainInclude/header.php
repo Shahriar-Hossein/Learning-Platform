@@ -23,6 +23,16 @@
     <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
+    <!-- Notyf for notifications -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+    
+    <script type="text/javascript" src="<?= DIRECTORY . 'js/jquery.min.js' ?>"></script>
+
+    <script type="text/javascript" src="<?= DIRECTORY . 'js/contact-us.js' ?>"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title><?= defined('TITLE') ? TITLE : 'My Application' ?></title>
   </head>
 

@@ -19,9 +19,41 @@ if (isset($_SESSION['student_id'])) {
 // Fetch course details, lessons, and quizzes
 if (isset($_GET['course_id'])) {
     $course_id = $_GET['course_id'];
+    $student_email = $_SESSION['student_email']; // Student email from session
+    $student_id = $_SESSION['student_id']; // Student ID from session
     $course_desc = '';
     $lessons = [];
     $quizzes = [];
+
+    // Check if the course was bought more than 2 months ago**
+    $order_sql = "SELECT order_date FROM courseorder WHERE course_id = ? AND stu_email = ?";
+    $stmt = $conn->prepare($order_sql);
+    $stmt->bind_param("is", $course_id, $student_email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $order_row = $result->fetch_assoc();
+        $order_date = strtotime($order_row['order_date']);
+        $two_months_ago = strtotime("-2 months");
+
+        // If course was purchased more than 2 months ago, delete it
+        if ($order_date < $two_months_ago) {
+            $delete_sql = "DELETE FROM courseorder WHERE course_id = ? AND stu_email = ?";
+            $stmt = $conn->prepare($delete_sql);
+            $stmt->bind_param("is", $course_id, $student_email);
+            $stmt->execute();
+            $stmt->close();
+
+            // Show alert and redirect
+            echo "<script>
+                alert('Your course has expired. Please purchase again.');
+                window.location.href = 'my-courses.php';
+            </script>";
+            exit();
+        }
+    }
+    $stmt->close();
 
     // Fetch course description
     $course_sql = "SELECT * FROM course WHERE course_id = '$course_id'";
@@ -62,9 +94,9 @@ include 'include/sidebar.php'; // Include the sidebar (HTML, head, body tags, et
 
 <div class="container mx-auto mt-5">
     <!-- Course Header -->
-    <div class="container-fluid bg-violet-400 p-2">
+    <div class="my-2 py-2 bg-violet-400 text-white shadow-lg rounded-lg">
         <h3 class="text-center text-white">Lessons and Quizzes for</h3>
-        <h3 class="text-center text-white"><?= isset($course_name) ? $course_name : "" ?></h3>
+        <h3 class="text-center text-4xl font-extrabold my-2"><?= isset($course_name) ? $course_name : "" ?></h3>
     </div>
 
     <div class="container-fluid mt-4">
@@ -72,6 +104,7 @@ include 'include/sidebar.php'; // Include the sidebar (HTML, head, body tags, et
             <!-- Course Description -->
             <div class="col-sm-12 mb-4">
                 <div class="bg-white shadow-lg rounded-lg p-4">
+                <p class="text-center text-lg text-gray-950 text-bold mb-2">Course Description:</p>
                     <?php if (isset($course_desc)) echo '<p>' . $course_desc . '</p>'; ?>
                 </div>
             </div>
@@ -112,7 +145,6 @@ include 'include/sidebar.php'; // Include the sidebar (HTML, head, body tags, et
             <thead>
                 <tr>
                     <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">SL NO.</th>
-                    <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Title</th>
                     <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Description</th>
                     <th class="py-5 px-7 bg-violet-200 text-left text-xs font-semibold text-violet-600 uppercase">Action</th>
                 </tr>
@@ -121,8 +153,7 @@ include 'include/sidebar.php'; // Include the sidebar (HTML, head, body tags, et
                 <?php foreach ($quizzes as $index => $quiz): ?>
                 <tr class="border-b border-violet-200 hover:bg-violet-50 transition duration-150 ease-in-out">
                     <td class="py-4 px-4 text-sm"><?= $index + 1 ?></td>
-                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($quiz['title']?? "quiz title") ?></td>
-                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars(substr($quiz['description'], 0, 50) . '...') ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars(substr($quiz['description'], 0, 80) . '...') ?></td>
                     <td class="py-4 px-4 text-sm">
                         <a href="view-quiz.php?quiz_id=<?= $quiz['id'] ?>&course_id=<?= $course_id ?>" class="text-violet-600 hover:underline">View Quiz</a>
                     </td>
