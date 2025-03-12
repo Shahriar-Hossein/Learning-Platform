@@ -26,30 +26,35 @@ if (!isset($_SESSION['student_id'])) {
 
   $stmt->close();
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (!isset($_SESSION['checkout_page_refreshed'])) {
+    $_SESSION["checkout_page_refreshed"] = true;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // $stuEmail = $_SESSION['stuLogEmail'];
-    $course_id = $_POST['course_id'];
-    $order_id = "ORDS" . rand(10000, 99999999);
-    $amount = isset($_POST['TXN_AMOUNT']) ? intval($_POST['TXN_AMOUNT']) : 0;
-    $camount_query = "SELECT course_price FROM course WHERE course_id = $course_id";
-    $camount_result = $conn->query($camount_query);
+      // $stuEmail = $_SESSION['stuLogEmail'];
+      $course_id = $_POST['course_id'];
+      $order_id = "ORDS" . rand(10000, 99999999);
+      $amount = isset($_POST['TXN_AMOUNT']) ? intval($_POST['TXN_AMOUNT']) : 0;
+      $camount_query = "SELECT course_price FROM course WHERE course_id = $course_id";
+      $camount_result = $conn->query($camount_query);
 
-    if ($camount_result->num_rows > 0) {
-      $row = $camount_result->fetch_assoc();
-      $course_price = $row['course_price'];
-      $sql = "INSERT INTO courseorder (order_id, stu_email, course_id, status, respmsg, amount, order_date) VALUES ('$order_id', '$stuEmail', '$course_id', '', '', '$course_price', CURDATE())";
+      if ($camount_result->num_rows > 0) {
+        $row = $camount_result->fetch_assoc();
+        $course_price = $row['course_price'];
+        $sql = "INSERT INTO courseorder (order_id, stu_email, course_id, status, respmsg, amount, order_date) VALUES ('$order_id', '$stuEmail', '$course_id', '', '', '$course_price', CURDATE())";
 
-      if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Going to Payment Gateway');</script>";
+        if ($conn->query($sql) === TRUE) {
+          $course_order_id = $conn->insert_id;
+          $_SESSION["course_order_id"] = $course_order_id;
+          echo "<script>alert('Going to Payment Gateway');</script>";
+        } else {
+          echo "Error: " . $sql . "<br>" . $conn->error;
+        }
       } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: Course not found.";
       }
-    } else {
-      echo "Error: Course not found.";
-    }
 
-    $conn->close();
+      $conn->close();
+    }
   }
 
 ?>
@@ -83,6 +88,10 @@ if (!isset($_SESSION['student_id'])) {
         <div class="col-sm-6 offset-sm-3 jumbotron">
           <h3 class="mb-5">Welcome to E-Learning Payment Page</h3>
           <form method="post" action="payment.php">
+            
+          <input hidden id="COURSE_ORDER_ID" class="form-control" tabindex="1" maxlength="20" size="20" name="COURSE_ORDER_ID" autocomplete="off" value="<?= $_SESSION["course_order_id"] ?? '' ?>" readonly>
+          <input hidden id="STUDENT_ID" class="form-control" tabindex="1" maxlength="20" size="20" name="STUDENT_ID" autocomplete="off" value="<?= $student_id ?? '' ?>" readonly>
+              
             <div class="form-group row">
               <label for="ORDER_ID" class="col-sm-4 col-form-label">Order ID</label>
               <div class="col-sm-8">

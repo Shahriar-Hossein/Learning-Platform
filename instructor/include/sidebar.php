@@ -1,6 +1,11 @@
 <?php
 const DIRECTORY = '../';
 include('../mainInclude/header.php');
+// Redirect if instructor session is not set
+if (!isset($_SESSION['instructor_id'])) {
+    echo "<script> location.href='../index.php'; </script>";
+    exit;
+}
 ?>
 
 <!-- Navbar -->
@@ -39,23 +44,30 @@ include('../mainInclude/header.php');
                 </svg>
                 Courses
             </a>
-            <a href="add-course.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Add Course' ? 'bg-violet-300' : '' ?>">
+            <!-- <a href="add-course.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Add Course' ? 'bg-violet-300' : '' ?>">
                 <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Add Course
-            </a>
+            </a> -->
             <a href="lessons.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Lessons' ? 'bg-violet-300' : '' ?>">
                 <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16m-7 4h7" />
                 </svg>
                 Lessons
             </a>
-            <a href="quiz.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Quizes' ? 'bg-violet-300' : '' ?>">
+            <a href="quiz.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Quizzes' ? 'bg-violet-300' : '' ?>">
                 <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8m-8 4h6" />
                 </svg>
                 Quizzes
+            </a>
+            <!-- My Profile -->
+            <a href="my-profile.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Instructor Profile' ? 'bg-violet-300' : '' ?>">
+                <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A11.968 11.968 0 0112 15.5c2.15 0 4.16.56 5.879 1.553M15.5 11.12c-1.49.93-3.5.93-5 0M9.121 7.5a4 4 0 115.758 0" />
+                </svg>
+                My Profile
             </a>
             <!-- Home -->
             <a href="../index.php" class="flex items-center py-2.5 px-4 rounded-lg transition duration-150 hover:bg-violet-300 <?= TITLE == 'Home' ? 'bg-violet-300' : '' ?>">

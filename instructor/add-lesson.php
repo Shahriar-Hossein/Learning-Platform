@@ -54,8 +54,10 @@ if (isset($_POST['lessonSubmitButton'])) {
 
       if ($insert_stmt->execute()) {
         $msg = '<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-2 my-2" role="alert">Lesson Added Successfully</div>';
+        $success_message = "Lesson added successfully!";
       } else {
         $msg = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 my-2" role="alert">Unable to Add Lesson</div>';
+        $error_message = "Failed to add lesson!";
       }
 
       $insert_stmt->close();
@@ -118,4 +120,14 @@ include('include/sidebar.php');
   </form>
 </div>
 
+<script>
+      const notyf = new Notyf({ position: { x: 'right', y: 'top' }, duration: 4000 });
+
+<?php if (isset($success_message)): ?>
+    notyf.success('<?= htmlspecialchars($success_message) ?>');
+<?php endif; ?>
+<?php if (isset($error_message)): ?>
+    notyf.error('<?= htmlspecialchars($error_message) ?>');
+<?php endif; ?>
+  </script>
 <?php include('../mainInclude/footer.php'); ?>

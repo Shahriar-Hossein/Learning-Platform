@@ -3,6 +3,8 @@ if (!isset($_SESSION)) {
     session_start();
 }
 include('../dbConnection.php');
+const TITLE = 'View Quiz';
+const PAGE = 'quizes';
 
 // Get quiz_id and course_id from the URL parameters
 if (isset($_GET['quiz_id']) && isset($_GET['course_id'])) {
@@ -35,8 +37,6 @@ if (isset($_GET['quiz_id']) && isset($_GET['course_id'])) {
     exit();
 }
 
-const TITLE = 'View Quiz';
-const PAGE = 'quizes';
 
 include('include/sidebar.php');
 ?>
@@ -77,22 +77,28 @@ include('include/sidebar.php');
                     <td class="py-4 px-4 text-sm"><?= $index + 1 ?></td>
                     <?php
                     // Get student name and email
-                    $stmt = $conn->prepare("SELECT first_name, last_name, email FROM students WHERE id = ?");
+                    $stmt = $conn->prepare("SELECT * FROM student WHERE id = ?");
                     $stmt->bind_param("i", $submission['student_id']);
                     $stmt->execute();
                     $student_result = $stmt->get_result();
                     $student = $student_result->fetch_assoc();
-                    $student_name = $student['first_name'] . ' ' . $student['last_name'];
+                    $student_name = $student['name'];
                     $student_email = $student['email'];
                     ?>
                     <td class="py-4 px-4 text-sm"><?= htmlspecialchars($student_name) ?></td>
                     <td class="py-4 px-4 text-sm"><?= htmlspecialchars($student_email) ?></td>
                     <td class="py-4 px-4 text-sm">
-                        <a href="<?= htmlspecialchars($submission['file_link']) ?>" target="_blank" class="text-violet-600 hover:underline">View Submission</a>
+                        <?php if ($submission['file_link']) : ?>
+                            <a href="<?= htmlspecialchars($submission['file_link']) ?>" target="_blank" class="text-violet-600 hover:underline">
+                                View Submission
+                            </a>
+                        <?php else : ?>
+                            <span class="text-gray-500">No File Submitted</span>
+                        <?php endif; ?>
                     </td>
-                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($submission['feedback']) ?: 'No feedback yet' ?></td>
+                    <td class="py-4 px-4 text-sm"><?= htmlspecialchars($submission['feedback']?? 'No feedback yet') ?> (<?= $submission['score']?? "No Score" ?>)</td>
                     <td class="py-4 px-4 text-sm">
-                        <button onclick="openFeedbackModal(<?= $submission['id'] ?>, '<?= htmlspecialchars($student_name) ?>')" class="text-violet-600 hover:text-violet-700">
+                        <button onclick="openFeedbackModal(<?= $submission['id'] ?>,<?= $submission['score']?? 0 ?>)" class="text-violet-600 hover:text-violet-700">
                             Provide Feedback
                         </button>
                     </td>
@@ -106,35 +112,82 @@ include('include/sidebar.php');
 <!-- Feedback Modal -->
 <div id="feedbackModal" class="fixed inset-0 flex items-center justify-center z-50 hidden bg-black bg-opacity-50">
     <div class="bg-white rounded-lg shadow-lg w-1/3 p-6">
-        <h4 class="text-2xl font-semibold text-violet-600 mb-4">Provide Feedback</h4>
-        <form action="submit_feedback.php" method="POST">
+        <h4 class="text-2xl font-semibold text-violet-600 mb-4">Provide Score</h4>
+        <form action="" method="POST" id="feedbackForm">
             <input type="hidden" id="quiz_file_id" name="quiz_file_id">
+            
+            <!-- Score Input -->
             <div class="mb-4">
-                <label for="feedback" class="block text-violet-600 mb-2">Feedback</label>
-                <select id="feedback" name="feedback" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
-                    <option value="Satisfactory">Satisfactory</option>
-                    <option value="Very Good">Very Good</option>
-                    <option value="Not Satisfactory">Not Satisfactory</option>
-                    <option value="Bad">Bad</option>
-                </select>
+                <label for="score" class="block text-violet-600 mb-2">Enter Score (0 - 100)</label>
+                <input type="number" id="score" name="score" min="0" max="100" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    oninput="fixScoreValue()">
             </div>
+            
             <div class="flex justify-between">
-                <button type="submit" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-lg">Submit</button>
-                <button type="button" onclick="closeFeedbackModal()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg">Close</button>
+                <button type="submit" onclick="submitForm(event)" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-lg">
+                    Submit
+                </button>
+                <button type="button" onclick="closeFeedbackModal()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg">
+                    Close
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    function openFeedbackModal(quizFileId, studentName) {
-        // Show the modal and set the hidden quiz file ID
+    const notyf = new Notyf({ position: { x: 'right', y: 'top' }, duration: 4000 });
+    function openFeedbackModal(quizFileId, score) {
         document.getElementById('quiz_file_id').value = quizFileId;
+        document.getElementById('score').value = score;
         document.getElementById('feedbackModal').classList.remove('hidden');
     }
 
     function closeFeedbackModal() {
         document.getElementById('feedbackModal').classList.add('hidden');
+    }
+
+    function fixScoreValue() {
+        let scoreInput = document.getElementById("score");
+        
+        if (scoreInput.value > 100) {
+            scoreInput.value = 100;
+        } else if (scoreInput.value < 0) {
+            scoreInput.value = 0;
+        }
+    }
+
+    function submitForm(event) {
+        event.preventDefault();  // Prevent form from submitting and causing a page reload
+        let form = document.getElementById('feedbackForm');
+        if (form.checkValidity()) {
+            // Create a FormData object to send form data
+            let formData = new FormData(form);
+
+            // Use the Fetch API to submit the form data
+            fetch('submit-feedback.php', {
+                method: 'POST',
+                body: formData, // Send the form data as the request body
+            })
+            .then(response => response.json())  // Parse the JSON response from the server
+            .then(data => {
+                if (data.status === 'success') {
+                    // Handle successful response
+                    closeFeedbackModal();
+                    notyf.success('Feedback submitted successfully');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                notyf.error("There was an error submitting the form.");
+            });
+        } else {
+            notyf.error("Please fill out the required fields.");
+        }
+        form.clear();
     }
 </script>
 

@@ -48,9 +48,12 @@ include('include/sidebar.php');
 <?php if (!empty($lesson_file)): ?>
 <div class="my-4 py-8 bg-violet-50 text-white shadow-lg rounded-lg">
     <p class="text-center text-lg text-gray-950 text-bold mb-2">Lesson Material:</p>
-    <div class="text-center">
-        <a href="<?= htmlspecialchars($lesson_file) ?>" target="_blank" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-lg">View Lesson File</a>
-    </div>
+    <div class="mt-2 max-w-2xl mx-auto">
+            <video controls class="w-full h-96 object-contain">
+                <source src="<?= htmlspecialchars($lesson['lesson_link']) ?>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
 </div>
 <?php else: ?>
 <div class="my-4 py-8 bg-violet-50 text-white shadow-lg rounded-lg">

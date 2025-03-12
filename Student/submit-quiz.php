@@ -11,11 +11,10 @@ function send_response($status, $message) {
 }
 
 // Check if the form is submitted via AJAX
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quiz_file']) && isset($_POST['quiz_id']) && isset($_POST['course_id'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quiz_file']) && isset($_POST['quiz_id'])) {
     // Get form data
     $quiz_id = $_POST['quiz_id'];
-    $course_id = $_POST['course_id'];
-    $student_email = $_SESSION['student_email']; // Assuming the student's email is stored in the session
+    $student_id = $_SESSION['student_id']; // Using student_id from session
 
     // Check if the file is uploaded and valid
     $file_name = $_FILES['quiz_file']['name'];
@@ -44,16 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quiz_file']) && isset
             // Move the uploaded file to the specified directory
             if (move_uploaded_file($file_tmp, $file_destination)) {
                 // Check if the student has already submitted the quiz
-                $stmt = $conn->prepare("SELECT * FROM quiz_files WHERE quiz_id = ? AND student_id = (SELECT id FROM student WHERE email = ?)");
-                $stmt->bind_param("is", $quiz_id, $student_email);
+                $stmt = $conn->prepare("SELECT * FROM quiz_files WHERE quiz_id = ? AND student_id = ?");
+                $stmt->bind_param("ii", $quiz_id, $student_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
                 // If student has already submitted the quiz, update the record; otherwise, insert new record
                 if ($result->num_rows > 0) {
                     // Update the existing submission
-                    $stmt = $conn->prepare("UPDATE quiz_files SET file_link = ? WHERE quiz_id = ? AND student_id = (SELECT id FROM student WHERE email = ?)");
-                    $stmt->bind_param("sis", $file_destination, $quiz_id, $student_email);
+                    $stmt = $conn->prepare("UPDATE quiz_files SET file_link = ?, updated_at = NOW() WHERE quiz_id = ? AND student_id = ?");
+                    $stmt->bind_param("sii", $file_destination, $quiz_id, $student_id);
                     if ($stmt->execute()) {
                         send_response('success', 'Your quiz file has been updated successfully.');
                     } else {
@@ -61,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quiz_file']) && isset
                     }
                 } else {
                     // Insert a new record for the submission
-                    $stmt = $conn->prepare("INSERT INTO quiz_files (quiz_id, student_id, file_link) VALUES (?, (SELECT id FROM student WHERE email = ?), ?)");
-                    $stmt->bind_param("iss", $quiz_id, $student_email, $file_destination);
+                    $stmt = $conn->prepare("INSERT INTO quiz_files (quiz_id, student_id, file_link, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
+                    $stmt->bind_param("iis", $quiz_id, $student_id, $file_destination);
                     if ($stmt->execute()) {
                         send_response('success', 'Your quiz file has been submitted successfully.');
                     } else {
@@ -79,6 +78,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quiz_file']) && isset
         }
     } else {
         send_response('error', 'There was an error uploading your file.');
+    }
+} else if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $student_id = $_SESSION['student_id']; // Using student_id from session
+    // Get the raw POST data (JSON payload)
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    // Check if quiz_id is provided in the JSON data
+    if (isset($data['quiz_id'])) {
+        $quiz_id = $data['quiz_id'];
+        // If no file is provided
+        $stmt = $conn->prepare("INSERT INTO quiz_files (quiz_id, student_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())");
+        $stmt->bind_param("ii", $quiz_id, $student_id);
+        if ($stmt->execute()) {
+            send_response('success', 'Quiz timer started.');
+        } else {
+            send_response('error', 'Could not start quiz.');
+        }
+    } else {
+        send_response('error', 'No quiz id provided.');
     }
 } else {
     send_response('error', 'Invalid request.');
