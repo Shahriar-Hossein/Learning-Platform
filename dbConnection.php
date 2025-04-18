@@ -1,7 +1,11 @@
 <?php
-$db_host = "localhost";
+// for windows with laragon
+// $db_host = "localhost";
+
+// for ubuntu
+$db_host = "127.0.0.1";
 $db_user = "root";
-$db_password = "";
+$db_password = "root";
 $db_name = "lms_db";
 
 // Create Connection
@@ -14,4 +18,3 @@ if($conn->connect_error) {
 // else {
 //  echo"connected";
 // }
-?>

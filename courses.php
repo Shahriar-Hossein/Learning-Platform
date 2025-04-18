@@ -3,7 +3,7 @@ const TITLE = "Maria's School";
 const PAGE = "courses";
 const DIRECTORY = "";
 
-include('./dbConnection.php');
+require_once('./dbConnection.php');
 session_start();
 
 // Fetch search parameters

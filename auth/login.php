@@ -1,9 +1,11 @@
 <?php
+session_start();
+
 const TITLE = "Maria's School";
 const PAGE = "Maria's School";
 const DIRECTORY = "../";
 
-include(DIRECTORY . "dbConnection.php");
+require_once(DIRECTORY . "dbConnection.php");
 
 // Function to handle login
 function loginUser($email, $password, $role, $conn) {
@@ -26,18 +28,10 @@ function loginUser($email, $password, $role, $conn) {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         if ($password === $user['password']) {
-            session_start();
             $_SESSION[$role . '_id'] = $user['id'];
             $_SESSION[$role . '_email'] = $email;
             $_SESSION['role'] = $role;
             $_SESSION['is_login'] = true;
-            echo '
-                <script>
-                    if (window.location.hash) {
-                    history.replaceState(null, null, window.location.pathname);
-                    };
-                </script>
-            ';
             header("Location: " . $roles[$role] . "dashboard.php");
             exit;
         }

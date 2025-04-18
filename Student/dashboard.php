@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION)) session_start();
 
-include('../dbConnection.php');
+require_once('../dbConnection.php');
 
 const TITLE = 'Student Dashboard';
 const PAGE = 'dashboard';
@@ -128,6 +128,10 @@ include('include/sidebar.php');
 </div>
 
 <script>
+    if (window.location.hash) {
+        history.replaceState(null, null, window.location.pathname);
+    };
+    
     const notyf = new Notyf({ position: { x: 'right', y: 'top' }, duration: 4000 });
 
     <?php if ($showWelcomeToast && $studentName): ?>
