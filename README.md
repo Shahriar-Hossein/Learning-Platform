@@ -55,7 +55,7 @@ This is a feature-rich Learning Platform developed using raw PHP, HTML, Tailwind
 2. Place the project folder inside `www` directory of Laragon.
 3. Start Laragon and navigate to the project URL.
 4. Import the provided database file into MySQL.
-5. Update database credentials in the `config.php` file.
+5. Update database credentials in the `dbConnection.php` file.
 6. Set up SSLCommerz API credentials for payment integration.
 7. Access the platform and log in as Admin, Teacher, or Student.
 
