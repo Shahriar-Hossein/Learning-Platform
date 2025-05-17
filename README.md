@@ -1,5 +1,20 @@
 # Learning Platform
+
+## Images of the project
+
+### Landing page
 ![Landing page of the website](docs/images/2025-05-18_00-34.png)
+
+### Course Details Page
+![Landing page of the website](docs/images/2025-05-18_02-27.png)
+
+### Student Dashboard
+![Landing page of the website](docs/images/2025-05-18_00-48_1.png)
+
+### Instructor Course Details Page
+![Landing page of the website](docs/images/2025-05-18_02-25_1.png)
+
+
 ## Overview
 This is a feature-rich Learning Platform developed using raw PHP, HTML, TailwindCSS, JavaScript, and MySQL. The platform provides role-based access for admins, teachers, and students, allowing seamless course creation, management, and learning experiences.
 
