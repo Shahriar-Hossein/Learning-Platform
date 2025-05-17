@@ -13,20 +13,26 @@ $store_id = "cyber670e1cc54b674";
 // Replace with your actual store ID
 $store_passwd = "cyber670e1cc54b674@ssl"; 
 // Replace with your actual store password
-$success_url = "http://localhost/lms/success.php?" . http_build_query(
+
+// url different for my local setup and 
+// for cloning from github
+// location set to lms for local development
+$location = '/lms'; // windows + laragon, folder name
+$location = ':8080'; // for running php server on localhost:8080
+$success_url = "http://localhost". $location . "/success.php?" . http_build_query(
     [
         'course_order_id' => $_POST['COURSE_ORDER_ID'], 
         'user_id'=>$_POST['STUDENT_ID'], 
         'user_email'=> $customer_email
     ]);
-$fail_url = "http://localhost/lms/fail.php?" . http_build_query(
+$fail_url = "http://localhost". $location . "/fail.php?" . http_build_query(
     [
         'course_id' => $_POST['COURSE_ID'], 
         'user_id'=>$_POST['STUDENT_ID'], 
         'user_email'=> $customer_email,
         'payment_status' => 'failed'
     ]);
-$cancel_url = "http://localhost/lms/fail.php?" . http_build_query(
+$cancel_url = "http://localhost". $location . "fail.php?" . http_build_query(
     [
         'course_id' => $_POST['COURSE_ID'], 
         'user_id'=>$_POST['STUDENT_ID'], 
